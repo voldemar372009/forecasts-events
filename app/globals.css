@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  --background: #0b1120;
+  --background: #070809;
   --foreground: #ffffff;
   --primary: #1e40af;
   --accent: #f59e0b;
@@ -25,15 +25,15 @@ body {
   color: #fff;
 }
 
-/* Тонкий скроллбар в неоновом стиле */
+/* Тонкий скроллбар */
 ::-webkit-scrollbar {
   width: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: #0f172a;
+  background: #0b0e12;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1e40af;
+  background: linear-gradient(180deg, #f59e0b, #1e40af);
   border-radius: 8px;
 }
 ::-webkit-scrollbar-thumb:hover {
@@ -41,24 +41,30 @@ body {
 }
 
 @layer components {
-  /* Неоморфная карточка с неоновой кромкой */
+  /* Тёмное неоновое окно с янтарной кромкой */
   .neon-card {
-    @apply rounded-2xl bg-night-card shadow-neumorphic border border-night-line;
+    @apply rounded-2xl bg-night-card border border-night-line;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.04),
+      6px 6px 14px rgba(0, 0, 0, 0.6);
   }
   .neon-card-hover {
-    @apply transition-all duration-300 hover:shadow-neon hover:-translate-y-1 hover:border-primary;
+    @apply transition-all duration-300 hover:-translate-y-1 hover:border-accent/40 hover:shadow-neon;
   }
   .glass {
-    @apply bg-night-card/70 backdrop-blur-md border border-night-line;
+    background: rgba(11, 14, 18, 0.75);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid #1f242b;
   }
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-accent px-6 py-3 font-semibold text-night
-      shadow-glowAccent transition-all hover:bg-accent-light hover:shadow-neon active:scale-95
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 font-bold text-[#1a1206]
+      shadow-glowAccent transition-all hover:brightness-110 hover:shadow-neon active:scale-95
       disabled:opacity-50 disabled:pointer-events-none;
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 55%, #d97706 100%);
   }
   .btn-ghost {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-night-line bg-night-light/60
-      px-5 py-3 font-medium text-white transition-all hover:border-primary hover:shadow-neonSm active:scale-95
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-night-line bg-night-light/70
+      px-5 py-3 font-medium text-white transition-all hover:border-accent/50 hover:shadow-neonSm active:scale-95
       disabled:opacity-50 disabled:pointer-events-none;
   }
   .btn-danger {
@@ -66,8 +72,8 @@ body {
       px-5 py-2 text-sm font-medium text-white transition-all hover:bg-red-800 active:scale-95;
   }
   .input-neon {
-    @apply w-full rounded-xl border border-night-line bg-night-light/70 px-4 py-3 text-white placeholder-white/40
-      outline-none transition-all focus:border-primary focus:shadow-neonSm;
+    @apply w-full rounded-xl border border-night-line bg-night-light/80 px-4 py-3 text-white placeholder-white/40
+      outline-none transition-all focus:border-accent/60 focus:shadow-neonSm;
   }
   .badge {
     @apply inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide;
@@ -76,10 +82,11 @@ body {
     @apply mb-1.5 block text-sm font-medium text-white/70;
   }
   .neon-text {
-    background: linear-gradient(120deg, #60a5fa 0%, #1e40af 45%, #f59e0b 100%);
+    background: linear-gradient(120deg, #fbbf24 0%, #f59e0b 45%, #1e40af 120%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
+    filter: drop-shadow(0 0 14px rgba(245, 158, 11, 0.35));
   }
 }
 

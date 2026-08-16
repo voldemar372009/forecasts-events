@@ -11,7 +11,7 @@ const config: Config = {
       colors: {
         primary: {
           DEFAULT: "#1E40AF",
-          light: "#2563EB",
+          light: "#3B82F6",
           dark: "#172554",
         },
         accent: {
@@ -20,28 +20,28 @@ const config: Config = {
           dark: "#B45309",
         },
         night: {
-          DEFAULT: "#0B1120",
-          light: "#111A2E",
-          card: "#0F172A",
-          line: "#1E293B",
+          DEFAULT: "#070809",
+          light: "#0D1014",
+          card: "#0B0E12",
+          line: "#1F242B",
         },
       },
       fontFamily: {
         sans: ["Roboto", "system-ui", "Arial", "sans-serif"],
       },
       boxShadow: {
-        neon: "0 0 24px rgba(37, 99, 235, 0.35), 0 8px 30px rgba(245, 158, 11, 0.15)",
-        neonSm: "0 0 14px rgba(37, 99, 235, 0.3)",
+        neon: "0 0 28px rgba(245, 158, 11, 0.25), 0 10px 40px rgba(245, 158, 11, 0.12)",
+        neonSm: "0 0 16px rgba(245, 158, 11, 0.22)",
         neumorphic:
-          "8px 8px 16px rgba(4, 8, 20, 0.85), -8px -8px 16px rgba(30, 41, 59, 0.45)",
+          "6px 6px 14px rgba(0, 0, 0, 0.7), -6px -6px 14px rgba(30, 36, 44, 0.35)",
         neumorphicSm:
-          "4px 4px 8px rgba(4, 8, 20, 0.75), -4px -4px 8px rgba(30, 41, 59, 0.4)",
-        glowAccent: "0 0 20px rgba(245, 158, 11, 0.4)",
+          "3px 3px 7px rgba(0, 0, 0, 0.65), -3px -3px 7px rgba(30, 36, 44, 0.3)",
+        glowAccent: "0 0 22px rgba(245, 158, 11, 0.45)",
       },
       backgroundImage: {
-        grid: "linear-gradient(rgba(30, 64, 175, 0.12) 1px, transparent 1px), linear-gradient(90deg, rgba(30, 64, 175, 0.12) 1px, transparent 1px)",
+        grid: "linear-gradient(rgba(245, 158, 11, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(245, 158, 11, 0.05) 1px, transparent 1px)",
         heroGlow:
-          "radial-gradient(ellipse 60% 50% at 50% 0%, rgba(30, 64, 175, 0.35), transparent 70%)",
+          "radial-gradient(ellipse 70% 55% at 50% -10%, rgba(245, 158, 11, 0.16), transparent 70%), radial-gradient(ellipse 45% 40% at 85% 10%, rgba(30, 64, 175, 0.22), transparent 70%)",
       },
       keyframes: {
         float: {

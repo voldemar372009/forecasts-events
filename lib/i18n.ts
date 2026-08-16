@@ -8,12 +8,12 @@ export function isLocale(v: string): v is Locale {
 
 const ru = {
   meta: {
-    title: "Прогнозы на события — ИИ-прогнозы на золото, нефть, биткоин и рынки",
+    title: "Прогноз AI — ИИ-прогнозы на золото, нефть, биткоин и рынки",
     description:
       "Искусственный интеллект рассчитывает прогнозы на золото, нефть, доллар, биткоин и другие события. Выберите событие и дату — получите прогноз с графиком и вероятностью.",
   },
   nav: {
-    brand: "Прогнозы",
+    brand: "Прогноз AI",
     home: "Главная",
     dashboard: "Кабинет",
     leaderboard: "Лидерборд",
@@ -24,8 +24,8 @@ const ru = {
   },
   hero: {
     badge: "ИИ-аналитика нового поколения",
-    titleA: "Прогнозы",
-    titleB: "на события",
+    titleA: "Прогноз",
+    titleB: "AI",
     subtitle:
       "Золото, нефть, доллар, биткоин, ставки и другие рынки. Выберите событие и дату — искусственный интеллект рассчитает прогноз с графиком траектории и вероятностью направления.",
     cta: "Выбрать событие",
@@ -196,12 +196,12 @@ export type Dict = typeof ru;
 
 const en: Dict = {
   meta: {
-    title: "Forecasts for Events — AI forecasts for gold, oil, bitcoin and markets",
+    title: "AI Forecast — AI predictions for gold, oil, bitcoin and markets",
     description:
       "AI calculates forecasts for gold, oil, the dollar, bitcoin and other events. Pick an event and a date — get a forecast with a chart and probability.",
   },
   nav: {
-    brand: "Forecasts",
+    brand: "AI Forecast",
     home: "Home",
     dashboard: "Dashboard",
     leaderboard: "Leaderboard",
@@ -212,8 +212,8 @@ const en: Dict = {
   },
   hero: {
     badge: "Next-generation AI analytics",
-    titleA: "Forecasts",
-    titleB: "for events",
+    titleA: "Forecast",
+    titleB: "AI",
     subtitle:
       "Gold, oil, dollar, bitcoin, rates and other markets. Pick an event and a date — AI will calculate a forecast with a trajectory chart and direction probability.",
     cta: "Choose an event",

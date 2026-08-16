@@ -8,7 +8,7 @@ import "@fontsource/roboto/cyrillic-700.css";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Прогнозы на события — ИИ-прогнозы",
+  title: "Прогноз AI — ИИ-прогнозы на рынки",
   description:
     "Искусственный интеллект рассчитывает прогнозы на золото, нефть, доллар, биткоин и другие события.",
 };
