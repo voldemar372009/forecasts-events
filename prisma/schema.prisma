@@ -1,0 +1,115 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum EventStatus {
+  ACTIVE
+  CLOSED
+  ARCHIVED
+}
+
+enum EventCategory {
+  GOLD
+  OIL
+  CURRENCY
+  CRYPTO
+  RATES
+  OTHER
+}
+
+enum ForecastStatus {
+  PENDING
+  READY
+  FAILED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  REFUNDED
+}
+
+model User {
+  id           String     @id @default(cuid())
+  email        String     @unique
+  name         String
+  passwordHash String
+  role         UserRole   @default(USER)
+  createdAt    DateTime   @default(now())
+  forecasts    Forecast[]
+  payments     Payment[]
+}
+
+model Event {
+  id            String        @id @default(cuid())
+  slug          String        @unique
+  title         String
+  titleEn       String?
+  description   String
+  descriptionEn String?
+  category      EventCategory
+  imageUrl      String?
+  price         Decimal       @default(50)
+  currency      String        @default("EUR")
+  currentPrice  Decimal?
+  chartData     Json?
+  status        EventStatus   @default(ACTIVE)
+  closesAt      DateTime?
+  createdAt     DateTime      @default(now())
+  forecasts     Forecast[]
+  payments      Payment[]
+}
+
+model Forecast {
+  id             String         @id @default(cuid())
+  userId         String
+  user           User           @relation(fields: [userId], references: [id])
+  eventId        String
+  event          Event          @relation(fields: [eventId], references: [id])
+  targetDate     DateTime
+  status         ForecastStatus @default(PENDING)
+  direction      String?
+  confidence     Int?
+  summary        String?
+  summaryEn      String?
+  keyLevels      Json?
+  chartData      Json?
+  priceAtRequest Decimal?
+  isCorrect      Boolean?
+  errorMessage   String?
+  payment        Payment?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  @@index([userId])
+  @@index([eventId])
+}
+
+model Payment {
+  id              String        @id @default(cuid())
+  userId          String
+  user            User          @relation(fields: [userId], references: [id])
+  eventId         String
+  event           Event         @relation(fields: [eventId], references: [id])
+  forecastId      String?       @unique
+  forecast        Forecast?     @relation(fields: [forecastId], references: [id])
+  stripeSessionId String        @unique
+  amount          Decimal
+  currency        String        @default("EUR")
+  status          PaymentStatus @default(PENDING)
+  createdAt       DateTime      @default(now())
+
+  @@index([userId])
+  @@index([eventId])
+}

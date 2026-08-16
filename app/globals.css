@@ -1,0 +1,105 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #0b1120;
+  --foreground: #ffffff;
+  --primary: #1e40af;
+  --accent: #f59e0b;
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: "Roboto", system-ui, Arial, sans-serif;
+  min-height: 100vh;
+}
+
+::selection {
+  background: rgba(245, 158, 11, 0.4);
+  color: #fff;
+}
+
+/* Тонкий скроллбар в неоновом стиле */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e40af;
+  border-radius: 8px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #f59e0b;
+}
+
+@layer components {
+  /* Неоморфная карточка с неоновой кромкой */
+  .neon-card {
+    @apply rounded-2xl bg-night-card shadow-neumorphic border border-night-line;
+  }
+  .neon-card-hover {
+    @apply transition-all duration-300 hover:shadow-neon hover:-translate-y-1 hover:border-primary;
+  }
+  .glass {
+    @apply bg-night-card/70 backdrop-blur-md border border-night-line;
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-accent px-6 py-3 font-semibold text-night
+      shadow-glowAccent transition-all hover:bg-accent-light hover:shadow-neon active:scale-95
+      disabled:opacity-50 disabled:pointer-events-none;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-night-line bg-night-light/60
+      px-5 py-3 font-medium text-white transition-all hover:border-primary hover:shadow-neonSm active:scale-95
+      disabled:opacity-50 disabled:pointer-events-none;
+  }
+  .btn-danger {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-red-900/60 border border-red-700
+      px-5 py-2 text-sm font-medium text-white transition-all hover:bg-red-800 active:scale-95;
+  }
+  .input-neon {
+    @apply w-full rounded-xl border border-night-line bg-night-light/70 px-4 py-3 text-white placeholder-white/40
+      outline-none transition-all focus:border-primary focus:shadow-neonSm;
+  }
+  .badge {
+    @apply inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide;
+  }
+  .label-form {
+    @apply mb-1.5 block text-sm font-medium text-white/70;
+  }
+  .neon-text {
+    background: linear-gradient(120deg, #60a5fa 0%, #1e40af 45%, #f59e0b 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+/* Нативный date-input в тёмной теме */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.8);
+  cursor: pointer;
+}
+
+/* Плавное появление контента */
+.fade-in {
+  animation: fadeIn 0.5s ease both;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

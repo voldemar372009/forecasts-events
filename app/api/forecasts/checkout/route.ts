@@ -1,0 +1,107 @@
+import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
+import { getSessionUser } from "@/lib/auth";
+import { getStripe, amountInCents } from "@/lib/stripe";
+import { generateForecast } from "@/lib/ai";
+import { isLocale } from "@/lib/i18n";
+
+const DAY = 86400000;
+
+export async function POST(req: NextRequest) {
+  const user = await getSessionUser();
+  if (!user) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+
+  const body = await req.json().catch(() => null);
+  const eventSlug = String(body?.eventSlug || "");
+  const targetDateRaw = String(body?.targetDate || "");
+  const locale = isLocale(String(body?.locale || "ru")) ? String(body.locale) : "ru";
+
+  const event = await prisma.event.findUnique({ where: { slug: eventSlug } });
+  if (!event || event.status !== "ACTIVE") {
+    return NextResponse.json({ error: "eventNotFound" }, { status: 404 });
+  }
+
+  const t = new Date(targetDateRaw);
+  if (isNaN(t.getTime())) {
+    return NextResponse.json({ error: "dateInvalid" }, { status: 400 });
+  }
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const max = new Date(Date.now() + 365 * DAY);
+  if (t.getTime() < today.getTime() || t.getTime() > max.getTime()) {
+    return NextResponse.json({ error: "dateRange" }, { status: 400 });
+  }
+
+  const amount = Number(event.price.toString());
+  const currency = (event.currency || "EUR").toLowerCase();
+  const appUrl = process.env.APP_URL || "http://localhost:3000";
+
+  try {
+    // Прогноз создаём сразу (PENDING) — генерация только после оплаты.
+    const forecast = await prisma.forecast.create({
+      data: {
+        userId: user.id,
+        eventId: event.id,
+        targetDate: t,
+        status: "PENDING",
+        priceAtRequest: event.currentPrice,
+      },
+    });
+
+    const stripe = getStripe();
+    if (stripe) {
+      const productImages = event.imageUrl && event.imageUrl.startsWith("http") ? [event.imageUrl] : undefined;
+      const session = await stripe.checkout.sessions.create({
+        mode: "payment",
+        line_items: [
+          {
+            price_data: {
+              currency,
+              product_data: {
+                name: event.title,
+                ...(productImages ? { images: productImages } : {}),
+              },
+              unit_amount: amountInCents(amount),
+            },
+            quantity: 1,
+          },
+        ],
+        metadata: { forecastId: forecast.id, userId: user.id },
+        success_url: `${appUrl}/${locale}/dashboard?paid=1`,
+        cancel_url: `${appUrl}/${locale}/events/${event.slug}`,
+      });
+
+      await prisma.payment.create({
+        data: {
+          userId: user.id,
+          eventId: event.id,
+          forecastId: forecast.id,
+          stripeSessionId: session.id,
+          amount,
+          currency: event.currency,
+          status: "PENDING",
+        },
+      });
+
+      return NextResponse.json({ url: session.url });
+    }
+
+    // Dev-обход (нет STRIPE_SECRET_KEY): сразу «оплачено» и генерируем прогноз.
+    await prisma.payment.create({
+      data: {
+        userId: user.id,
+        eventId: event.id,
+        forecastId: forecast.id,
+        stripeSessionId: "dev_" + forecast.id,
+        amount,
+        currency: event.currency,
+        status: "PAID",
+      },
+    });
+    void generateForecast(forecast.id);
+    return NextResponse.json({ url: `${appUrl}/${locale}/forecast/${forecast.id}`, dev: true });
+  } catch (e) {
+    console.error("checkout error", e);
+    return NextResponse.json({ error: "checkoutFailed" }, { status: 500 });
+  }
+}
