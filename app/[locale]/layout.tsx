@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getDict, isLocale, defaultLocale } from "@/lib/i18n";
 import { getSessionUser } from "@/lib/auth";
+import Sidebar, { LogoMark } from "@/components/Sidebar";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import LogoutButton from "@/components/LogoutButton";
 
@@ -17,55 +18,67 @@ export default async function LocaleLayout({
 
   return (
     <div className="flex min-h-screen flex-col bg-grid bg-[length:28px_28px]">
-      <header className="glass sticky top-0 z-20 border-b border-night-line">
-        <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-4 py-3">
-          <Link href={`/${locale}`} className="text-xl font-bold tracking-tight">
-            <span className="neon-text">{dict.nav.brand}</span>
-          </Link>
-          <nav className="flex items-center gap-4 sm:gap-6">
-            <Link href={`/${locale}`} className="hidden text-sm font-medium text-white/70 hover:text-accent sm:block">
-              {dict.nav.home}
+      {/* Боковая панель (десктоп) */}
+      <Sidebar
+        locale={locale}
+        user={user ? { name: user.name, role: user.role } : null}
+        dict={{
+          brand: dict.nav.brand,
+          markets: dict.nav.markets,
+          newForecast: dict.nav.newForecast,
+          dashboard: dict.nav.dashboard,
+          analytics: dict.nav.analytics,
+          admin: dict.nav.admin,
+          login: dict.nav.login,
+          logout: dict.nav.logout,
+          live: dict.events.live,
+        }}
+      />
+
+      {/* Верхняя панель (мобильные) */}
+      <div className="glass sticky top-0 z-20 flex items-center justify-between gap-3 px-4 py-3 lg:hidden">
+        <Link href={`/${locale}`} className="flex items-center gap-2">
+          <LogoMark size={32} />
+          <span className="font-bold text-white">{dict.nav.brand}</span>
+        </Link>
+        <div className="flex items-center gap-2">
+          {user ? (
+            <LogoutButton locale={locale} label={dict.nav.logout} />
+          ) : (
+            <Link href={`/${locale}/auth/login`} className="btn-ghost !px-3 !py-1.5 text-xs">
+              {dict.nav.login}
             </Link>
-            <Link href={`/${locale}/leaderboard`} className="hidden text-sm font-medium text-white/70 hover:text-accent sm:block">
-              {dict.nav.leaderboard}
-            </Link>
-            {user && (
-              <Link href={`/${locale}/dashboard`} className="text-sm font-medium text-white/70 hover:text-accent">
-                {dict.nav.dashboard}
-              </Link>
-            )}
-            {user?.role === "ADMIN" && (
-              <Link href={`/${locale}/admin`} className="text-sm font-medium text-accent-light hover:text-accent">
-                {dict.nav.admin}
-              </Link>
-            )}
-            <Link href={`/${locale}/new-forecast`} className="btn-primary !px-4 !py-2 text-sm">
-              {dict.nav.newForecast}
-            </Link>
-            <LanguageSwitcher locale={locale} />
-            {user ? (
-              <div className="flex items-center gap-3">
-                <span className="hidden max-w-[120px] truncate text-sm font-semibold text-white md:block">
-                  {user.name}
-                </span>
-                <LogoutButton locale={locale} label={dict.nav.logout} />
-              </div>
-            ) : (
-              <Link href={`/${locale}/auth/login`} className="btn-ghost !px-4 !py-2 text-sm">
-                {dict.nav.login}
-              </Link>
-            )}
-          </nav>
+          )}
+          <LanguageSwitcher locale={locale} />
         </div>
-      </header>
+      </div>
+      {/* Мобильное меню (прокрутка) */}
+      <nav className="sticky top-[61px] z-10 flex gap-2 overflow-x-auto border-b border-night-line bg-[#0A0C10]/90 px-4 py-2 backdrop-blur lg:hidden">
+        {[
+          { href: `/${locale}`, label: dict.nav.markets },
+          { href: `/${locale}/new-forecast`, label: dict.nav.newForecast },
+          { href: `/${locale}/dashboard`, label: dict.nav.dashboard },
+          { href: `/${locale}/leaderboard`, label: dict.nav.analytics },
+          ...(user?.role === "ADMIN" ? [{ href: `/${locale}/admin`, label: dict.nav.admin }] : []),
+        ].map((l) => (
+          <Link
+            key={l.href}
+            href={l.href}
+            className="whitespace-nowrap rounded-full border border-night-line bg-night-card px-3 py-1.5 text-xs font-medium text-white/70 hover:text-white"
+          >
+            {l.label}
+          </Link>
+        ))}
+      </nav>
 
-      <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8">{children}</main>
-
-      <footer className="border-t border-night-line py-6">
-        <p className="mx-auto max-w-3xl px-4 text-center text-xs leading-relaxed text-white/40">
-          © {new Date().getFullYear()} {dict.nav.brand} · {dict.hero.disclaimer}
-        </p>
-      </footer>
+      <div className="flex-1 lg:pl-64">
+        <main className="mx-auto w-full max-w-6xl px-4 py-8">{children}</main>
+        <footer className="border-t border-night-line py-6">
+          <p className="mx-auto max-w-3xl px-4 text-center text-xs leading-relaxed text-white/40">
+            © {new Date().getFullYear()} {dict.nav.brand} · {dict.hero.disclaimer}
+          </p>
+        </footer>
+      </div>
     </div>
   );
 }

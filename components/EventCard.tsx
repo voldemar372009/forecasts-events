@@ -49,7 +49,7 @@ export default function EventCard({
             alt={event.title}
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
           />
-          <span className="badge absolute left-3 top-3 bg-night/80 text-accent-light backdrop-blur">
+          <span className="badge absolute left-3 top-3 border border-accent/30 bg-accent/15 text-accent-light backdrop-blur">
             {event.categoryLabel}
           </span>
           {event.closed && (
@@ -79,7 +79,10 @@ export default function EventCard({
             </div>
           </div>
           {spark ? (
-            <div className="mt-3 h-12 w-full">
+            <div
+              className="mt-3 h-12 w-full"
+              style={{ filter: "drop-shadow(0 0 6px rgba(245, 158, 11, 0.5))" }}
+            >
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={spark} margin={{ top: 2, right: 0, left: 0, bottom: 0 }}>
                   <defs>

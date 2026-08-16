@@ -12,7 +12,7 @@ import {
 
 export default function PriceChart({ data }: { data: { t: string; v: number }[] }) {
   return (
-    <div className="h-64 w-full">
+    <div className="h-64 w-full" style={{ filter: "drop-shadow(0 0 10px rgba(245, 158, 11, 0.25))" }}>
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart data={data} margin={{ top: 10, right: 16, left: 8, bottom: 4 }}>
           <defs>
