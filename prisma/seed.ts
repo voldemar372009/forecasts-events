@@ -72,7 +72,7 @@ async function main() {
       descriptionEn:
         "Gold price forecast (XAU/USD, $/oz). Trend analysis, support/resistance levels, macro factors and volatility. AI forecast for the chosen date with a trajectory chart and direction probability.",
       category: EventCategory.GOLD,
-      price: 50,
+      price: 10,
       currentPrice: 2331.2,
       label: "Au",
       c1: "#F59E0B",
@@ -89,7 +89,7 @@ async function main() {
       descriptionEn:
         "Brent crude oil price forecast (USD/barrel). Considers inventories, OPEC+ decisions, geopolitics and demand seasonality. AI forecast with direction confidence and key levels.",
       category: EventCategory.OIL,
-      price: 50,
+      price: 10,
       currentPrice: 84.6,
       label: "Brent",
       c1: "#1E40AF",
@@ -106,7 +106,7 @@ async function main() {
       descriptionEn:
         "EUR/USD exchange rate forecast. Analysis of Fed and ECB policy, inflation and capital flows. Direction and target range forecast for the date.",
       category: EventCategory.CURRENCY,
-      price: 50,
+      price: 10,
       currentPrice: 1.0843,
       label: "€/$",
       c1: "#1E40AF",
@@ -123,7 +123,7 @@ async function main() {
       descriptionEn:
         "Bitcoin price forecast (BTC/USD). On-chain metrics, halvings, ETF inflows and market sentiment. AI trajectory forecast and up/down probability for the date.",
       category: EventCategory.CRYPTO,
-      price: 50,
+      price: 10,
       currentPrice: 67240,
       label: "₿",
       c1: "#F59E0B",
@@ -140,7 +140,7 @@ async function main() {
       descriptionEn:
         "Fed funds rate forecast and probability of a change by the chosen date. Inflation data, employment and FOMC rhetoric analysis.",
       category: EventCategory.RATES,
-      price: 50,
+      price: 10,
       currentPrice: 5.5,
       label: "R",
       c1: "#0EA5E9",
@@ -157,7 +157,7 @@ async function main() {
       descriptionEn:
         "S&P 500 index forecast (points). Seasonality, earnings, rates and global risks. Index level and direction probability forecast for the date.",
       category: EventCategory.OTHER,
-      price: 50,
+      price: 10,
       currentPrice: 5218.4,
       label: "S&P",
       c1: "#10B981",
@@ -281,7 +281,7 @@ async function main() {
         eventId: f.eventId,
         forecastId: forecast.id,
         stripeSessionId: "seed_" + forecast.id,
-        amount: 50,
+        amount: 10,
         currency: "EUR",
         status: "PAID",
       },

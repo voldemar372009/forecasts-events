@@ -59,7 +59,7 @@ export async function POST(req: NextRequest) {
         descriptionEn: `Custom forecast for: ${title}`,
         category: category as never,
         imageUrl: categoryImage(category, title),
-        price: 50,
+        price: 10,
         currency: "EUR",
         currentPrice,
         chartData: chartData ?? undefined,

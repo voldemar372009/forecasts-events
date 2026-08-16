@@ -16,7 +16,7 @@ export default async function NewForecastPage({ params }: { params: { locale: st
         locale={locale}
         categories={[...CATEGORIES]}
         categoryLabels={dict.category}
-        price={50}
+        price={10}
         currency="EUR"
         dict={{
           marketName: dict.newForecast.marketName,
