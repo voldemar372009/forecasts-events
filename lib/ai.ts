@@ -96,6 +96,7 @@ async function callOpenAI(args: {
   event: { title: string; category: string };
   price: number;
   targetDate: Date;
+  history?: { t: string; v: number }[] | null;
 }): Promise<ForecastPayload> {
   const { apiKey, event, price, targetDate } = args;
   const dateStr = targetDate.toISOString().slice(0, 10);
@@ -106,9 +107,11 @@ async function callOpenAI(args: {
     "summaryEn (120-300 chars, English), support (array of 2 numbers), resistance (array of 2 numbers), " +
     "drift (daily expected change as decimal, e.g. 0.0015), volatility (daily volatility as decimal, e.g. 0.02). " +
     "Values must be consistent with the direction and confidence.";
-  const user =
-    `Event: ${event.title} (category: ${event.category}). ` +
+  const user = `Event: ${event.title} (category: ${event.category}). ` +
     `Current price: ${price}. ` +
+    (args.history && args.history.length
+      ? `Recent daily closes: ${args.history.slice(-14).map((p) => `${p.t}:${p.v}`).join(", ")}. `
+      : "") +
     `Forecast target date: ${dateStr}. ` +
     "Generate the forecast.";
   const res = await fetch("https://api.openai.com/v1/chat/completions", {
@@ -161,9 +164,12 @@ export async function generateForecast(forecastId: string): Promise<void> {
   const price = Number(forecast.priceAtRequest ?? event.currentPrice ?? 0) || 0;
   try {
     const apiKey = process.env.OPENAI_API_KEY;
+    const history = Array.isArray(event.chartData)
+      ? (event.chartData as { t: string; v: number }[])
+      : null;
     let payload: ForecastPayload;
     if (apiKey) {
-      payload = await callOpenAI({ apiKey, event, price, targetDate: forecast.targetDate });
+      payload = await callOpenAI({ apiKey, event, price, targetDate: forecast.targetDate, history });
     } else if (process.env.NODE_ENV !== "production") {
       payload = mockPayload(event, price, forecast.targetDate);
     } else {

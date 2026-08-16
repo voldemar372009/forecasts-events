@@ -83,6 +83,7 @@ const ru = {
     priceInvalid: "Введите корректную текущую цену (больше 0)",
     note: "После оплаты прогноз появится в вашем кабинете",
     autoCategory: "Категория определена автоматически",
+    autoSource: "Реальная цена: {src}",
   },
   forecast: {
     status: {
@@ -269,6 +270,7 @@ const en: Dict = {
     priceInvalid: "Enter a valid current price (greater than 0)",
     note: "After payment the forecast will appear in your dashboard",
     autoCategory: "Category detected automatically",
+    autoSource: "Live price: {src}",
   },
   forecast: {
     status: {

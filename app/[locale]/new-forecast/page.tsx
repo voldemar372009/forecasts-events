@@ -34,6 +34,7 @@ export default async function NewForecastPage({ params }: { params: { locale: st
           dateRequired: dict.eventPage.dateRequired,
           note: dict.newForecast.note,
           autoCategory: dict.newForecast.autoCategory,
+          autoSource: dict.newForecast.autoSource,
         }}
       />
       <p className="pb-4 text-center text-xs text-white/40">{dict.hero.disclaimer}</p>

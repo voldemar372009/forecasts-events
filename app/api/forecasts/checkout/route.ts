@@ -5,6 +5,7 @@ import { getStripe, amountInCents } from "@/lib/stripe";
 import { generateForecast } from "@/lib/ai";
 import { isLocale } from "@/lib/i18n";
 import { CATEGORIES, categoryImage, detectCategory } from "@/lib/categories";
+import { getMarketQuote } from "@/lib/market";
 import { slugify } from "@/lib/slugify";
 import type { Event } from "@prisma/client";
 
@@ -25,12 +26,19 @@ export async function POST(req: NextRequest) {
     const title = String(body?.title || "").trim();
     const detected = detectCategory(title);
     const category = detected ?? String(body?.category || "OTHER");
-    const currentPrice = Number(body?.currentPrice);
     if (title.length < 2 || title.length > 80) {
       return NextResponse.json({ error: "nameRequired" }, { status: 400 });
     }
     if (!(CATEGORIES as readonly string[]).includes(category)) {
       return NextResponse.json({ error: "invalidCategory" }, { status: 400 });
+    }
+    // Реальная цена с рынка (если источник найден) — авторитетнее введённой вручную
+    const quote = await getMarketQuote(title).catch(() => null);
+    let currentPrice = Number(body?.currentPrice);
+    let chartData: unknown = null;
+    if (quote) {
+      currentPrice = quote.price;
+      chartData = quote.history && quote.history.length > 1 ? quote.history : null;
     }
     if (!(currentPrice > 0) || !isFinite(currentPrice)) {
       return NextResponse.json({ error: "priceInvalid" }, { status: 400 });
@@ -54,6 +62,7 @@ export async function POST(req: NextRequest) {
         price: 50,
         currency: "EUR",
         currentPrice,
+        chartData: chartData ?? undefined,
         isCustom: true,
       },
     });

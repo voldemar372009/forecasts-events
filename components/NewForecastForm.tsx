@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import DatePicker from "./DatePicker";
 import { todayInput, maxDateInput } from "@/lib/format";
@@ -22,6 +22,7 @@ type NewDict = {
   dateRequired: string;
   note: string;
   autoCategory: string;
+  autoSource: string;
 };
 
 export default function NewForecastForm({
@@ -45,9 +46,34 @@ export default function NewForecastForm({
   const [categoryTouched, setCategoryTouched] = useState(false);
   const [autoDetected, setAutoDetected] = useState<CategoryId | null>(null);
   const [currentPrice, setCurrentPrice] = useState("");
+  const [priceSource, setPriceSource] = useState<string | null>(null);
   const [date, setDate] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Автоподстановка реальной цены: Binance (крипта) / open.er-api.com (валюты)
+  useEffect(() => {
+    const t = title.trim();
+    if (t.length < 2) {
+      setPriceSource(null);
+      return;
+    }
+    const timer = setTimeout(async () => {
+      try {
+        const res = await fetch(`/api/market/quote?title=${encodeURIComponent(t)}`);
+        const data = await res.json();
+        if (data.quote?.price) {
+          setCurrentPrice((prev) => (prev && prev.trim() !== "" ? prev : String(data.quote.price)));
+          setPriceSource(`${data.quote.source} · ${data.quote.symbol}`);
+        } else {
+          setPriceSource(null);
+        }
+      } catch {
+        setPriceSource(null);
+      }
+    }, 600);
+    return () => clearTimeout(timer);
+  }, [title]);
 
   function onTitleChange(v: string) {
     setTitle(v);
@@ -168,6 +194,11 @@ export default function NewForecastForm({
               required
             />
             <p className="mt-1 text-xs text-white/40">{dict.currentPriceHint}</p>
+            {priceSource && (
+              <p className="mt-1 text-xs font-medium text-emerald-300">
+                ✓ {dict.autoSource.replace("{src}", priceSource)}
+              </p>
+            )}
           </div>
         </div>
 
