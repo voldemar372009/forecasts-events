@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Area, AreaChart, ResponsiveContainer } from "recharts";
+import { resolveEventImage } from "@/lib/categories";
 
 export type EventCardData = {
   slug: string;
@@ -34,37 +35,50 @@ export default function EventCard({
   labels: Labels;
 }) {
   const spark = event.chartData && event.chartData.length > 1 ? event.chartData : null;
+  const photo = resolveEventImage(event.imageUrl || null, event.category);
+  const fallback = event.imageUrl || "";
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ y: -6 }}
       transition={{ duration: 0.3 }}
-      className="neon-card neon-card-hover overflow-hidden group"
+      className="neon-card neon-card-hover relative overflow-hidden group"
     >
-      <Link href={`/${locale}/events/${event.slug}`} className="block">
-        <div className="relative h-40 overflow-hidden">
-          <img
-            src={event.imageUrl}
-            alt={event.title}
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-          />
-          <span className="badge absolute left-3 top-3 border border-accent/30 bg-accent/15 text-accent-light backdrop-blur">
+      {/* Затуманенное фото-фон по теме рынка */}
+      <img
+        src={photo}
+        alt=""
+        aria-hidden
+        onError={(e) => {
+          e.currentTarget.onerror = null;
+          if (fallback) e.currentTarget.src = fallback;
+          else e.currentTarget.style.opacity = "0";
+        }}
+        className="absolute inset-0 h-full w-full object-cover blur-[3px] brightness-[0.5] saturate-[0.75] transition-transform duration-700 group-hover:scale-110"
+      />
+      {/* Дымка для читаемости */}
+      <div className="absolute inset-0 bg-gradient-to-b from-night/80 via-night/50 to-night" />
+
+      <Link href={`/${locale}/events/${event.slug}`} className="relative z-10 flex min-h-[290px] flex-col p-4">
+        <div className="flex items-start justify-between gap-2">
+          <span className="badge border border-accent/30 bg-accent/15 text-accent-light backdrop-blur">
             {event.categoryLabel}
           </span>
           {event.closed && (
-            <span className="badge absolute right-3 top-3 bg-red-900/80 text-white">
-              {labels.closed}
-            </span>
+            <span className="badge bg-red-900/80 text-white">{labels.closed}</span>
           )}
         </div>
-        <div className="p-4">
-          <h3 className="text-lg font-bold text-white">{event.title}</h3>
-          <div className="mt-3 flex items-end justify-between gap-2">
+
+        <h3 className="mt-3 text-lg font-bold text-white drop-shadow">{event.title}</h3>
+
+        <div className="mt-auto pt-4">
+          <div className="flex items-end justify-between gap-2">
             <div>
-              <p className="text-xs text-white/50">{labels.current}</p>
+              <p className="text-xs text-white/60">{labels.current}</p>
               {event.currentPrice !== null ? (
-                <p className="text-xl font-bold text-primary-light">
+                <p className="text-xl font-bold text-accent-light">
                   {event.currentPrice.toLocaleString("en-US", { maximumFractionDigits: 2 })}
                 </p>
               ) : (
@@ -72,12 +86,13 @@ export default function EventCard({
               )}
             </div>
             <div className="text-right">
-              <p className="text-xs text-white/50">{labels.from}</p>
-              <p className="text-lg font-bold text-accent">
+              <p className="text-xs text-white/60">{labels.from}</p>
+              <p className="text-lg font-bold text-white">
                 {event.price} {event.currency}
               </p>
             </div>
           </div>
+
           {spark ? (
             <div
               className="mt-3 h-12 w-full"
@@ -105,8 +120,9 @@ export default function EventCard({
           ) : (
             <div className="mt-3 h-12 rounded-lg bg-night-light/50" />
           )}
-          <div className="mt-4 flex items-center justify-between">
-            <span className="text-sm font-medium text-primary-light group-hover:text-accent-light transition-colors">
+
+          <div className="mt-3 flex items-center justify-between">
+            <span className="text-sm font-medium text-accent-light transition-colors group-hover:text-accent-light">
               {event.closed ? labels.closed : labels.open} →
             </span>
           </div>

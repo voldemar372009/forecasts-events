@@ -17,6 +17,27 @@ export function categoryImage(category: string, label?: string): string {
   return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
 }
 
+const photoKeywords: Record<CategoryId, string> = {
+  GOLD: "gold,ingot",
+  OIL: "oil,petroleum",
+  CURRENCY: "currency,money",
+  CRYPTO: "bitcoin,crypto",
+  RATES: "interest,chart",
+  OTHER: "stock,market",
+};
+
+/** Реальное фото по категории (бесплатный LoremFlickr по ключевым словам). */
+export function categoryPhoto(category: string): string {
+  const kw = photoKeywords[category as CategoryId] ?? "stock,market";
+  return `https://loremflickr.com/640/360/${encodeURIComponent(kw)}`;
+}
+
+/** Картинка для отображения: реальный URL админа > фото категории > SVG-заглушка. */
+export function resolveEventImage(imageUrl: string | null, category: string): string {
+  if (imageUrl && imageUrl.startsWith("http")) return imageUrl;
+  return categoryPhoto(category);
+}
+
 // Ключевые слова для автоопределения категории по названию рынка/события.
 // Короткие ключи (<=3 симв.) сравниваются по целым токенам, длинные — подстрокой.
 const keywordMap: Record<CategoryId, string[]> = {

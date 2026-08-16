@@ -2,8 +2,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getDict, isLocale, defaultLocale } from "@/lib/i18n";
 import { getEventBySlug } from "@/lib/data";
+import { resolveEventImage } from "@/lib/categories";
 import PriceChart from "@/components/PriceChart";
 import BuyForecastCard from "@/components/BuyForecastCard";
+import FogImage from "@/components/FogImage";
 
 export const dynamic = "force-dynamic";
 
@@ -21,6 +23,7 @@ export default async function EventPage({
     t: string;
     v: number;
   }[] | null;
+  const photo = resolveEventImage(event.imageUrl, event.category);
 
   return (
     <div className="fade-in space-y-6">
@@ -28,32 +31,35 @@ export default async function EventPage({
         {dict.eventPage.back}
       </Link>
 
-      <div className="neon-card overflow-hidden">
-        <div className="relative h-56 sm:h-64">
-          <img src={event.imageUrl ?? ""} alt={event.title} className="h-full w-full object-cover" />
-          <span className="badge absolute left-4 top-4 bg-night/80 text-accent-light backdrop-blur">
-            {dict.category[event.category] || event.category}
+      <div className="neon-card relative overflow-hidden">
+        <FogImage
+          src={photo}
+          fallback={event.imageUrl ?? undefined}
+          className="absolute inset-0 h-full w-full object-cover blur-[2px] brightness-[0.45]"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-night/70 via-night/40 to-night" />
+        {event.status !== "ACTIVE" && (
+          <span className="badge absolute right-4 top-4 z-10 bg-red-900/80 text-white">
+            {dict.events.closed}
           </span>
-          {event.status !== "ACTIVE" && (
-            <span className="badge absolute right-4 top-4 bg-red-900/80 text-white">
-              {dict.events.closed}
-            </span>
-          )}
-        </div>
-        <div className="flex flex-wrap items-center justify-between gap-4 p-6">
+        )}
+        <div className="relative z-10 flex flex-wrap items-center justify-between gap-4 p-6 sm:p-8">
           <div>
-            <h1 className="text-3xl font-bold text-white">{event.title}</h1>
+            <span className="badge border border-accent/30 bg-accent/15 text-accent-light">
+              {dict.category[event.category] || event.category}
+            </span>
+            <h1 className="mt-2 text-3xl font-bold text-white drop-shadow">{event.title}</h1>
             {event.currentPrice !== null && (
-              <p className="mt-1 text-white/60">
+              <p className="mt-1 text-white/70">
                 {dict.events.current}:{" "}
-                <span className="font-bold text-primary-light">
+                <span className="font-bold text-accent-light">
                   {event.currentPrice.toLocaleString("en-US", { maximumFractionDigits: 2 })}
                 </span>
               </p>
             )}
           </div>
           <div className="text-right">
-            <p className="text-xs text-white/50">{dict.events.from}</p>
+            <p className="text-xs text-white/60">{dict.events.from}</p>
             <p className="text-2xl font-bold text-accent">
               {event.price} {event.currency}
             </p>
