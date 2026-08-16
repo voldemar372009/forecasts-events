@@ -82,6 +82,7 @@ const ru = {
     nameRequired: "Введите название рынка или события (от 2 символов)",
     priceInvalid: "Введите корректную текущую цену (больше 0)",
     note: "После оплаты прогноз появится в вашем кабинете",
+    autoCategory: "Категория определена автоматически",
   },
   forecast: {
     status: {
@@ -267,6 +268,7 @@ const en: Dict = {
     nameRequired: "Enter the market or event name (min 2 characters)",
     priceInvalid: "Enter a valid current price (greater than 0)",
     note: "After payment the forecast will appear in your dashboard",
+    autoCategory: "Category detected automatically",
   },
   forecast: {
     status: {

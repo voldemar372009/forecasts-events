@@ -4,7 +4,7 @@ import { getSessionUser } from "@/lib/auth";
 import { getStripe, amountInCents } from "@/lib/stripe";
 import { generateForecast } from "@/lib/ai";
 import { isLocale } from "@/lib/i18n";
-import { CATEGORIES, categoryImage } from "@/lib/categories";
+import { CATEGORIES, categoryImage, detectCategory } from "@/lib/categories";
 import { slugify } from "@/lib/slugify";
 import type { Event } from "@prisma/client";
 
@@ -23,7 +23,8 @@ export async function POST(req: NextRequest) {
   let event: Event;
   if (isCustom) {
     const title = String(body?.title || "").trim();
-    const category = String(body?.category || "OTHER");
+    const detected = detectCategory(title);
+    const category = detected ?? String(body?.category || "OTHER");
     const currentPrice = Number(body?.currentPrice);
     if (title.length < 2 || title.length > 80) {
       return NextResponse.json({ error: "nameRequired" }, { status: 400 });

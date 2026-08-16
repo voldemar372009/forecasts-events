@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import DatePicker from "./DatePicker";
 import { todayInput, maxDateInput } from "@/lib/format";
+import { detectCategory, type CategoryId } from "@/lib/categories";
 
 type NewDict = {
   marketName: string;
@@ -20,6 +21,7 @@ type NewDict = {
   priceInvalid: string;
   dateRequired: string;
   note: string;
+  autoCategory: string;
 };
 
 export default function NewForecastForm({
@@ -40,10 +42,30 @@ export default function NewForecastForm({
   const router = useRouter();
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState(categories[0] ?? "OTHER");
+  const [categoryTouched, setCategoryTouched] = useState(false);
+  const [autoDetected, setAutoDetected] = useState<CategoryId | null>(null);
   const [currentPrice, setCurrentPrice] = useState("");
   const [date, setDate] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  function onTitleChange(v: string) {
+    setTitle(v);
+    const detected = detectCategory(v);
+    if (detected) {
+      setCategory(detected);
+      setAutoDetected(detected);
+    } else {
+      setAutoDetected(null);
+      if (!categoryTouched) setCategory(categories[0] ?? "OTHER");
+    }
+  }
+
+  function onCategoryChange(v: string) {
+    setCategory(v);
+    setCategoryTouched(true);
+    setAutoDetected(null);
+  }
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -103,7 +125,7 @@ export default function NewForecastForm({
             id="nf-title"
             className="input-neon"
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={(e) => onTitleChange(e.target.value)}
             placeholder={dict.marketNamePlaceholder}
             maxLength={80}
             required
@@ -119,7 +141,7 @@ export default function NewForecastForm({
               id="nf-category"
               className="input-neon"
               value={category}
-              onChange={(e) => setCategory(e.target.value)}
+              onChange={(e) => onCategoryChange(e.target.value)}
             >
               {categories.map((c) => (
                 <option key={c} value={c}>
@@ -127,6 +149,9 @@ export default function NewForecastForm({
                 </option>
               ))}
             </select>
+            {autoDetected && (
+              <p className="mt-1 text-xs text-accent-light">✓ {dict.autoCategory}</p>
+            )}
           </div>
           <div>
             <label className="label-form" htmlFor="nf-price">
