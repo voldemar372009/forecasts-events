@@ -39,6 +39,9 @@ export default async function LocaleLayout({
                 {dict.nav.admin}
               </Link>
             )}
+            <Link href={`/${locale}/new-forecast`} className="btn-primary !px-4 !py-2 text-sm">
+              {dict.nav.newForecast}
+            </Link>
             <LanguageSwitcher locale={locale} />
             {user ? (
               <div className="flex items-center gap-3">

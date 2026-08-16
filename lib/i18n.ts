@@ -20,6 +20,7 @@ const ru = {
     admin: "Админ",
     login: "Войти",
     logout: "Выйти",
+    newForecast: "Новый прогноз",
   },
   hero: {
     badge: "ИИ-аналитика нового поколения",
@@ -29,6 +30,7 @@ const ru = {
       "Золото, нефть, доллар, биткоин, ставки и другие рынки. Выберите событие и дату — искусственный интеллект рассчитает прогноз с графиком траектории и вероятностью направления.",
     cta: "Выбрать событие",
     how: "Как это работает",
+    newForecast: "Создать свой прогноз",
     disclaimer:
       "Прогнозы носят информационный характер и не являются инвестиционной рекомендацией.",
   },
@@ -68,6 +70,18 @@ const ru = {
     buyPending: "Перенаправляем на оплату…",
     dateRequired: "Сначала выберите дату",
     closed: "Событие закрыто, прогнозы недоступны",
+  },
+  newForecast: {
+    title: "Новый прогноз",
+    subtitle: "Добавьте своё событие или рынок — ИИ рассчитает прогноз на выбранную дату",
+    marketName: "Название рынка / события",
+    marketNamePlaceholder: "Например: Золото, Биткоин, EUR/USD, Нефть WTI…",
+    category: "Категория",
+    currentPrice: "Текущая цена",
+    currentPriceHint: "Введите актуальную цену актива — от неё ИИ построит прогноз",
+    nameRequired: "Введите название рынка или события (от 2 символов)",
+    priceInvalid: "Введите корректную текущую цену (больше 0)",
+    note: "После оплаты прогноз появится в вашем кабинете",
   },
   forecast: {
     status: {
@@ -192,6 +206,7 @@ const en: Dict = {
     admin: "Admin",
     login: "Log in",
     logout: "Log out",
+    newForecast: "New forecast",
   },
   hero: {
     badge: "Next-generation AI analytics",
@@ -201,6 +216,7 @@ const en: Dict = {
       "Gold, oil, dollar, bitcoin, rates and other markets. Pick an event and a date — AI will calculate a forecast with a trajectory chart and direction probability.",
     cta: "Choose an event",
     how: "How it works",
+    newForecast: "Create your own forecast",
     disclaimer: "Forecasts are informational only and are not investment advice.",
   },
   how: {
@@ -239,6 +255,18 @@ const en: Dict = {
     buyPending: "Redirecting to payment…",
     dateRequired: "Choose a date first",
     closed: "Event is closed, forecasts unavailable",
+  },
+  newForecast: {
+    title: "New forecast",
+    subtitle: "Add your own event or market — AI will calculate a forecast for the chosen date",
+    marketName: "Market / event name",
+    marketNamePlaceholder: "E.g. Gold, Bitcoin, EUR/USD, WTI Oil…",
+    category: "Category",
+    currentPrice: "Current price",
+    currentPriceHint: "Enter the current asset price — AI builds the forecast from it",
+    nameRequired: "Enter the market or event name (min 2 characters)",
+    priceInvalid: "Enter a valid current price (greater than 0)",
+    note: "After payment the forecast will appear in your dashboard",
   },
   forecast: {
     status: {

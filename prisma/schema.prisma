@@ -66,6 +66,7 @@ model Event {
   chartData     Json?
   status        EventStatus   @default(ACTIVE)
   closesAt      DateTime?
+  isCustom      Boolean       @default(false)
   createdAt     DateTime      @default(now())
   forecasts     Forecast[]
   payments      Payment[]

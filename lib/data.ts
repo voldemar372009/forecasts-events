@@ -65,7 +65,7 @@ function toView(
 export async function getEvents(locale: Locale): Promise<EventView[]> {
   await autoCloseEvents();
   const events = await prisma.event.findMany({
-    where: { status: "ACTIVE" },
+    where: { status: "ACTIVE", isCustom: false },
     orderBy: { createdAt: "asc" },
   });
   return events.map((e) => toView(e, locale));

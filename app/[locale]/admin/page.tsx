@@ -41,6 +41,7 @@ export default async function AdminPage({ params }: { params: { locale: string }
     currentPrice: e.currentPrice ? Number(e.currentPrice.toString()) : null,
     status: e.status,
     closesAt: e.closesAt ? e.closesAt.toISOString() : null,
+    isCustom: e.isCustom,
     forecastCount: e._count.forecasts,
     paymentCount: e._count.payments,
   }));

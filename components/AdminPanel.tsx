@@ -13,6 +13,7 @@ export type AdminEvent = {
   currentPrice: number | null;
   status: string;
   closesAt: string | null;
+  isCustom: boolean;
   forecastCount: number;
   paymentCount: number;
 };
@@ -302,7 +303,12 @@ export default function AdminPanel({
               <tbody>
                 {events.map((e) => (
                   <tr key={e.id} className="border-b border-night-line/50 last:border-0">
-                    <td className="px-4 py-3 font-medium text-white">{e.title}</td>
+                    <td className="px-4 py-3 font-medium text-white">
+                      {e.title}{" "}
+                      {e.isCustom && (
+                        <span className="badge ml-1 bg-night-light text-accent-light">custom</span>
+                      )}
+                    </td>
                     <td className="px-4 py-3 font-mono text-xs text-white/50">{e.slug}</td>
                     <td className="px-4 py-3 text-accent">
                       {e.price} {e.currency}

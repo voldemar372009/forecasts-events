@@ -28,6 +28,7 @@ export async function GET() {
       currentPrice: e.currentPrice ? Number(e.currentPrice.toString()) : null,
       status: e.status,
       closesAt: e.closesAt,
+      isCustom: e.isCustom,
       forecastCount: e._count.forecasts,
       paymentCount: e._count.payments,
     })),

@@ -4,6 +4,9 @@ import { getSessionUser } from "@/lib/auth";
 import { getStripe, amountInCents } from "@/lib/stripe";
 import { generateForecast } from "@/lib/ai";
 import { isLocale } from "@/lib/i18n";
+import { CATEGORIES, categoryImage } from "@/lib/categories";
+import { slugify } from "@/lib/slugify";
+import type { Event } from "@prisma/client";
 
 const DAY = 86400000;
 
@@ -12,13 +15,54 @@ export async function POST(req: NextRequest) {
   if (!user) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
 
   const body = await req.json().catch(() => null);
-  const eventSlug = String(body?.eventSlug || "");
   const targetDateRaw = String(body?.targetDate || "");
   const locale = isLocale(String(body?.locale || "ru")) ? String(body.locale) : "ru";
+  const isCustom = Boolean(body?.custom);
 
-  const event = await prisma.event.findUnique({ where: { slug: eventSlug } });
-  if (!event || event.status !== "ACTIVE") {
-    return NextResponse.json({ error: "eventNotFound" }, { status: 404 });
+  // Событие: либо существующее из каталога, либо созданное посетителем
+  let event: Event;
+  if (isCustom) {
+    const title = String(body?.title || "").trim();
+    const category = String(body?.category || "OTHER");
+    const currentPrice = Number(body?.currentPrice);
+    if (title.length < 2 || title.length > 80) {
+      return NextResponse.json({ error: "nameRequired" }, { status: 400 });
+    }
+    if (!(CATEGORIES as readonly string[]).includes(category)) {
+      return NextResponse.json({ error: "invalidCategory" }, { status: 400 });
+    }
+    if (!(currentPrice > 0) || !isFinite(currentPrice)) {
+      return NextResponse.json({ error: "priceInvalid" }, { status: 400 });
+    }
+    const base = slugify(title) || "custom";
+    let slug = base;
+    let n = 0;
+    while (await prisma.event.findUnique({ where: { slug } })) {
+      n += 1;
+      slug = `${base}-${n}`;
+    }
+    event = await prisma.event.create({
+      data: {
+        slug,
+        title,
+        titleEn: title,
+        description: `Пользовательский прогноз по событию: ${title}`,
+        descriptionEn: `Custom forecast for: ${title}`,
+        category: category as never,
+        imageUrl: categoryImage(category, title),
+        price: 50,
+        currency: "EUR",
+        currentPrice,
+        isCustom: true,
+      },
+    });
+  } else {
+    const eventSlug = String(body?.eventSlug || "");
+    const found = await prisma.event.findUnique({ where: { slug: eventSlug } });
+    if (!found || found.status !== "ACTIVE") {
+      return NextResponse.json({ error: "eventNotFound" }, { status: 404 });
+    }
+    event = found;
   }
 
   const t = new Date(targetDateRaw);

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { getDict, isLocale, defaultLocale } from "@/lib/i18n";
 import { getEvents } from "@/lib/data";
 import EventCard from "@/components/EventCard";
@@ -29,10 +30,13 @@ export default async function HomePage({ params }: { params: { locale: string } 
           <a href="#events" className="btn-primary">
             {dict.hero.cta}
           </a>
-          <a href="#how" className="btn-ghost">
-            {dict.hero.how}
-          </a>
+          <Link href={`/${locale}/new-forecast`} className="btn-ghost">
+            {dict.hero.newForecast}
+          </Link>
         </div>
+        <a href="#how" className="mt-6 inline-block text-sm text-white/40 underline-offset-4 hover:text-accent hover:underline">
+          {dict.hero.how} ↓
+        </a>
       </section>
 
       {/* How it works */}
