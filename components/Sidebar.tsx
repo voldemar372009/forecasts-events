@@ -20,26 +20,29 @@ type SidebarDict = {
 export function LogoMark({ size = 40 }: { size?: number }) {
   return (
     <div
-      className="flex items-center justify-center rounded-xl shadow-glowAccent"
+      className="relative flex shrink-0 items-center justify-center rounded-xl shadow-glowAccent"
       style={{
         width: size,
         height: size,
         background: "linear-gradient(135deg, #FBBF24 0%, #F59E0B 55%, #D97706 100%)",
       }}
     >
+      {/* Фирменный знак «Прогноз AI»: история цены + пунктирная проекция + целевая точка */}
       <svg
-        width={size * 0.55}
-        height={size * 0.55}
-        viewBox="0 0 24 24"
+        width={size * 0.62}
+        height={size * 0.62}
+        viewBox="0 0 32 32"
         fill="none"
         stroke="#1A1206"
-        strokeWidth="2.6"
+        strokeWidth="2.4"
         strokeLinecap="round"
         strokeLinejoin="round"
       >
-        <path d="M7 17L17 7" />
-        <path d="M9 7h8v8" />
+        <path d="M5 24 L10 17 L14 20 L19 12" />
+        <path d="M19 12 L25 7" strokeDasharray="2.5 2.5" />
+        <circle cx="25" cy="7" r="2.2" fill="#1A1206" stroke="none" />
       </svg>
+      <span className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-white/15" />
     </div>
   );
 }
@@ -74,7 +77,10 @@ export default function Sidebar({
       {/* Логотип */}
       <div className="flex items-center gap-3 px-5 py-5">
         <LogoMark />
-        <span className="text-lg font-bold tracking-tight text-white">{dict.brand}</span>
+        <span className="text-lg font-bold tracking-tight text-white">
+          {dict.brand.split(" ")[0]}{" "}
+          <span className="neon-text">{dict.brand.split(" ").slice(1).join(" ") || "AI"}</span>
+        </span>
       </div>
 
       {/* Меню */}
