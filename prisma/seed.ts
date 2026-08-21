@@ -165,6 +165,108 @@ async function main() {
       vol: 0.011,
       seed: 66,
     },
+    {
+      slug: "cpi-pce",
+      title: "Инфляция (CPI / PCE)",
+      titleEn: "Inflation (CPI / PCE)",
+      description:
+        "Прогноз инфляции по индексам CPI и PCE (США). Анализ динамики цен, базового эффекта, энерго- и пищевых компонентов. Прогноз значения индекса и реакции рынка на дату публикации.",
+      descriptionEn:
+        "US CPI and PCE inflation forecast. Price dynamics analysis, base effects, energy and food components. Index value and market reaction forecast for the release date.",
+      category: EventCategory.RATES,
+      price: 10,
+      currentPrice: 3.4,
+      label: "CPI",
+      c1: "#EF4444",
+      c2: "#B91C1C",
+      vol: 0.008,
+      seed: 77,
+    },
+    {
+      slug: "gdp",
+      title: "ВВП",
+      titleEn: "GDP",
+      description:
+        "Прогноз ВВП США (квартальный, annualized). Учёт потребительских расходов, инвестиций, госзакупок и чистого экспорта. Прогноз темпа роста и влияния на политику ФРС.",
+      descriptionEn:
+        "US GDP forecast (quarterly, annualized). Considers consumer spending, investment, government purchases and net exports. Growth pace and Fed policy impact forecast.",
+      category: EventCategory.RATES,
+      price: 10,
+      currentPrice: 2.8,
+      label: "GDP",
+      c1: "#0EA5E9",
+      c2: "#0369A1",
+      vol: 0.006,
+      seed: 88,
+    },
+    {
+      slug: "labor-market",
+      title: "Рынок труда (безработица, NFP)",
+      titleEn: "Labor Market (Unemployment, NFP)",
+      description:
+        "Прогноз по рынку труда: NFP (численность занятых вне фермерских хозяйств), уровень безработицы, средняя почасовая зарплата. Влияние на решения ФРС и волатильность долларов.",
+      descriptionEn:
+        "Labor market forecast: NFP (non-farm payrolls), unemployment rate, average hourly earnings. Impact on Fed decisions and dollar volatility.",
+      category: EventCategory.RATES,
+      price: 10,
+      currentPrice: 3.9,
+      label: "NFP",
+      c1: "#8B5CF6",
+      c2: "#5B21B6",
+      vol: 0.007,
+      seed: 99,
+    },
+    {
+      slug: "pmi",
+      title: "Промышленные индексы (PMI)",
+      titleEn: "Industrial Indices (PMI)",
+      description:
+        "Прогноз по индексам деловой активности (Manufacturing PMI, Services PMI, Composite PMI) для США, ЕС и Китая. Ведущий индикатор рецессии/экспансии.",
+      descriptionEn:
+        "Business activity indices forecast (Manufacturing PMI, Services PMI, Composite PMI) for US, EU and China. Leading indicator of recession/expansion.",
+      category: EventCategory.RATES,
+      price: 10,
+      currentPrice: 51.2,
+      label: "PMI",
+      c1: "#10B981",
+      c2: "#065F46",
+      vol: 0.005,
+      seed: 110,
+    },
+    {
+      slug: "spacex-ipo",
+      title: "IPO SpaceX",
+      titleEn: "SpaceX IPO",
+      description:
+        "Прогноз оценки и цены размещения SpaceX при IPO. Учёт контрактов NASA/DoD, Starlink, Starship, приватных раундов. Сценарии оценки $150–250 млрд.",
+      descriptionEn:
+        "SpaceX IPO valuation and offer price forecast. NASA/DoD contracts, Starlink, Starship, private rounds considered. Valuation scenarios $150–250B.",
+      category: EventCategory.OTHER,
+      price: 10,
+      currentPrice: 180,
+      label: "SX",
+      c1: "#6366F1",
+      c2: "#312E81",
+      vol: 0.025,
+      seed: 121,
+    },
+    {
+      slug: "openai-ipo",
+      title: "IPO OpenAI",
+      titleEn: "OpenAI IPO",
+      description:
+        "Прогноз оценки и цены размещения OpenAI при IPO. Учёт выручки ChatGPT/Enterprise, партнёрства с Microsoft, 경쟁инга, регуляторики. Сценарии $100–200 млрд.",
+      descriptionEn:
+        "OpenAI IPO valuation and offer price forecast. ChatGPT/Enterprise revenue, Microsoft partnership, competition, regulation. Valuation scenarios $100–200B.",
+      category: EventCategory.OTHER,
+      price: 10,
+      currentPrice: 120,
+      label: "OAI",
+      c1: "#EC4899",
+      c2: "#831843",
+      vol: 0.025,
+      seed: 132,
+    },
   ];
 
   for (const e of events) {
