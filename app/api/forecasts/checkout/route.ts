@@ -83,8 +83,8 @@ export async function POST(req: NextRequest) {
   }
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  const max = new Date(Date.now() + 365 * DAY);
-  if (t.getTime() < today.getTime() || t.getTime() > max.getTime()) {
+  // Без ограничения по году — разрешаем любую будущую дату.
+  if (t.getTime() < today.getTime()) {
     return NextResponse.json({ error: "dateRange" }, { status: 400 });
   }
 

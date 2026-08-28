@@ -51,6 +51,6 @@ export function todayInput(): string {
 }
 
 export function maxDateInput(): string {
-  const d = new Date(Date.now() + 365 * 86400000);
-  return toDateInput(d);
+  // Без ограничений по году — разрешаем сколь угодно дальние даты.
+  return "9999-12-31";
 }
