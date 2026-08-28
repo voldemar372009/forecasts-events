@@ -88,7 +88,7 @@ export default function EventCard({
             <div className="text-right">
               <p className="text-xs text-white/60">{labels.from}</p>
               <p className="text-lg font-bold text-white">
-                {event.price} {event.currency}
+                {event.price === 10 ? "10$ / 10€ / 10USDT" : `${event.price} ${event.currency}`}
               </p>
             </div>
           </div>

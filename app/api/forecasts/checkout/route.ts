@@ -40,8 +40,10 @@ export async function POST(req: NextRequest) {
       currentPrice = quote.price;
       chartData = quote.history && quote.history.length > 1 ? quote.history : null;
     }
-    if (!(currentPrice > 0) || !isFinite(currentPrice)) {
-      return NextResponse.json({ error: "priceInvalid" }, { status: 400 });
+    // Для свободных событий (не рынков) реальной цены может не быть —
+    // используем нейтральный базис 1, чтобы прогноз строился по анализу запроса.
+    if (!quote && !(currentPrice > 0)) {
+      currentPrice = 1;
     }
     const base = slugify(title) || "custom";
     let slug = base;

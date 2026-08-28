@@ -39,18 +39,37 @@ const fxCodes: Record<string, string> = {
   dkk: "DKK", pln: "PLN", czk: "CZK", huf: "HUF", zar: "ZAR",
 };
 
+// Золото и драгметаллы: бесплатный API без ключа
+const metalsCodes: Record<string, { code: string; name: string; currency: string }> = {
+  gold: { code: "XAU", name: "Золото", currency: "USD" },
+  золото: { code: "XAU", name: "Золото", currency: "USD" },
+  xau: { code: "XAU", name: "Gold", currency: "USD" },
+  silver: { code: "XAG", name: "Серебро", currency: "USD" },
+  серебро: { code: "XAG", name: "Серебро", currency: "USD" },
+  xag: { code: "XAG", name: "Silver", currency: "USD" },
+};
+
 function tokensOf(title: string): string[] {
   return title.toLowerCase().split(/[^a-zа-я0-9]+/).filter(Boolean);
 }
 
 export function parseSymbol(
   title: string
-): { kind: "crypto"; symbol: string } | { kind: "fx"; from: string; to: string } | null {
+):
+  | { kind: "crypto"; symbol: string }
+  | { kind: "fx"; from: string; to: string }
+  | { kind: "metal"; code: string }
+  | null {
   const toks = tokensOf(title);
   // 1) криптовалюты: известные имена/тикеры
   for (const t of toks) {
     const s = cryptoSymbols[t];
     if (s) return { kind: "crypto", symbol: s };
+  }
+  // 1.5) драгметаллы: золото/серебро
+  for (const t of toks) {
+    const m = metalsCodes[t];
+    if (m) return { kind: "metal", code: m.code };
   }
   // 2) валюты: две кодовые валюты в названии -> пара "из/в"
   const found: string[] = [];
@@ -107,6 +126,22 @@ export async function getMarketQuote(title: string): Promise<MarketQuote | null>
           .filter((p) => p.v > 0)
       : null;
     return { price, currency: "USD", source: "Binance", symbol: `${parsed.symbol}/USDT`, history };
+  }
+
+  // драгметаллы: бесплатный gold-api.com (без ключа)
+  if (parsed.kind === "metal") {
+    const data = (await fetchJson(
+      `https://api.gold-api.com/price/${parsed.code}`
+    )) as { price?: number; name?: string } | null;
+    if (!data || typeof data.price !== "number" || data.price <= 0) return null;
+    const metalPrice = data.price;
+    return {
+      price: metalPrice,
+      currency: "USD",
+      source: "api.gold-api.com",
+      symbol: parsed.code,
+      history: null,
+    };
   }
 
   // валюты

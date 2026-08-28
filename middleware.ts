@@ -7,7 +7,8 @@ function getLocale(req: NextRequest): Locale {
   const cookie = req.cookies.get(LOCALE_COOKIE)?.value;
   if (cookie && (locales as readonly string[]).includes(cookie)) return cookie as Locale;
   const accept = req.headers.get("accept-language") || "";
-  if (accept.toLowerCase().startsWith("en")) return "en";
+  const pref = accept.toLowerCase().split(",")[0].split("-")[0].split("_")[0] as Locale;
+  if ((locales as readonly string[]).includes(pref)) return pref;
   return defaultLocale;
 }
 
@@ -27,9 +28,8 @@ export async function middleware(req: NextRequest) {
 
   const hasLocale =
     pathname === `/${locales[0]}` ||
-    pathname === `/${locales[1]}` ||
     pathname.startsWith(`/${locales[0]}/`) ||
-    pathname.startsWith(`/${locales[1]}/`);
+    (locales as readonly string[]).some((l) => pathname === `/${l}` || pathname.startsWith(`/${l}/`));
 
   if (!hasLocale) {
     const url = req.nextUrl.clone();

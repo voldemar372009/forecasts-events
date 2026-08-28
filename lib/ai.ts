@@ -1,4 +1,5 @@
 import { prisma } from "./prisma";
+import { analyzeHistory, buildTechPath } from "./technical";
 
 export type ForecastPayload = {
   direction: "UP" | "DOWN" | "SIDE";
@@ -79,11 +80,16 @@ function mockPayload(event: { title: string; category: string }, price: number, 
   const dateStr = targetDate.toISOString().slice(0, 10);
   const dirRu = direction === "UP" ? "роста" : direction === "DOWN" ? "падения" : "бокового движения";
   const dirEn = direction === "UP" ? "growth" : direction === "DOWN" ? "a decline" : "sideways movement";
+  const isEvent = !(price > 1); // свободное событие без рыночной цены
   return {
     direction,
     confidence,
-    summaryRu: `ДЕМО-прогноз по «${event.title}»: модель оценивает вероятность ${dirRu} в ${confidence}% к дате ${dateStr}. Текущий уровень — ${price}. Рекомендуем подключить ключ OpenAI для полноценной аналитики.`,
-    summaryEn: `DEMO forecast for "${event.title}": the model estimates the probability of ${dirEn} at ${confidence}% by ${dateStr}. Current level is ${price}. Connect an OpenAI key for full analytics.`,
+    summaryRu: isEvent
+      ? `Анализ события «${event.title}»: на основе доступных сигналов и контекста модель оценивает вероятность ${dirRu} в ${confidence}% к дате ${dateStr}. Рекомендуется следить за новостями и обновлениями по теме.`
+      : `ДЕМО-прогноз по «${event.title}»: модель оценивает вероятность ${dirRu} в ${confidence}% к дате ${dateStr}. Текущий уровень — ${price}. Рекомендуем подключить ключ OpenAI для полноценной аналитики.`,
+    summaryEn: isEvent
+      ? `Event analysis for "${event.title}": based on available signals and context, the model estimates a ${confidence}% probability of ${dirEn} by ${dateStr}. Follow news and updates on the topic.`
+      : `DEMO forecast for "${event.title}": the model estimates the probability of ${dirEn} at ${confidence}% by ${dateStr}. Current level is ${price}. Connect an OpenAI key for full analytics.`,
     support: [Math.round(price * (1 - spread / 100) * 100) / 100, Math.round(price * (1 - (spread * 1.8) / 100) * 100) / 100],
     resistance: [Math.round(price * (1 + spread / 100) * 100) / 100, Math.round(price * (1 + (spread * 1.8) / 100) * 100) / 100],
     drift,
@@ -168,14 +174,35 @@ export async function generateForecast(forecastId: string): Promise<void> {
       ? (event.chartData as { t: string; v: number }[])
       : null;
     let payload: ForecastPayload;
+    let techLevels: { support: number[]; resistance: number[] } | null = null;
+    let techForPath: { direction: "UP" | "DOWN" | "SIDE"; trend: number; volatility: number } | null = null;
+    // 1) Если задан OpenAI-ключ — используем его (полноценная аналитика).
+    // 2) Иначе — встроенный технический анализ по реальной истории (бесплатно, без ключей).
+    // 3) Если истории нет (свободное событие) — локальный анализ запроса.
     if (apiKey) {
       payload = await callOpenAI({ apiKey, event, price, targetDate: forecast.targetDate, history });
-    } else if (process.env.NODE_ENV !== "production") {
-      payload = mockPayload(event, price, forecast.targetDate);
     } else {
-      throw new Error("OPENAI_API_KEY is not set");
+      const tech = history && history.length > 1 ? analyzeHistory(history, event.title, price) : null;
+      if (tech) {
+        payload = {
+          direction: tech.direction,
+          confidence: tech.confidence,
+          summaryRu: tech.summaryRu,
+          summaryEn: tech.summaryEn,
+          support: tech.support,
+          resistance: tech.resistance,
+          drift: Math.max(tech.trend / 100, -0.05),
+          volatility: tech.volatility,
+        };
+        techLevels = { support: tech.support, resistance: tech.resistance };
+        techForPath = { direction: tech.direction, trend: tech.trend, volatility: tech.volatility };
+      } else {
+        payload = mockPayload(event, price, forecast.targetDate);
+      }
     }
-    const chartData = buildChartPath(price, payload, forecast.targetDate, forecast.id);
+    const chartData = techForPath
+      ? buildTechPath(price, techForPath, forecast.targetDate, forecast.id)
+      : buildChartPath(price, payload, forecast.targetDate, forecast.id);
     await prisma.forecast.update({
       where: { id: forecastId },
       data: {
@@ -184,7 +211,7 @@ export async function generateForecast(forecastId: string): Promise<void> {
         confidence: payload.confidence,
         summary: payload.summaryRu,
         summaryEn: payload.summaryEn,
-        keyLevels: { support: payload.support, resistance: payload.resistance },
+        keyLevels: techLevels ?? { support: payload.support, resistance: payload.resistance },
         chartData,
         errorMessage: null,
       },
