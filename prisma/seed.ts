@@ -293,6 +293,286 @@ async function main() {
     });
   }
 
+  // ---- Валютные пары («Курс валют» на странице категории Экономика) ----
+  // Те же «окна», что и на главной: размытое фото по названию пары,
+  // кнопка «Открыть» → страница прогноза с графиком, датой, ценой 10$ и описанием.
+  const currencyPairs = [
+    {
+      slug: "usd-rub",
+      title: "Доллар США / рубль (USD/RUB)",
+      titleEn: "US Dollar / Ruble (USD/RUB)",
+      currentPrice: 85.8724,
+      vol: 0.008,
+      seed: 201,
+      photoKw: "dollar,ruble,banknotes",
+      description:
+        "Прогноз курса доллара США к рублю (USD/RUB). Анализ денежно-кредитной политики ФРС и ЦБ РФ, цен на нефть, капитальных потоков и геополитических факторов. ИИ-прогноз на выбранную дату с графиком траектории и вероятностью направления.",
+      descriptionEn:
+        "USD/RUB exchange rate forecast. Analysis of Fed and CBR policy, oil prices, capital flows and geopolitical factors. AI forecast for the chosen date with a trajectory chart and direction probability.",
+    },
+    {
+      slug: "eur-rub",
+      title: "Евро / рубль (EUR/RUB)",
+      titleEn: "Euro / Ruble (EUR/RUB)",
+      currentPrice: 96.7486,
+      vol: 0.008,
+      seed: 202,
+      photoKw: "euro,ruble,banknotes",
+      description:
+        "Прогноз курса евро к рублю (EUR/RUB). Учёт ставок ЕЦБ и ЦБ РФ, торгового баланса, динамики нефти и санкционных рисков. ИИ-прогноз направления и целевого диапазона на выбранную дату.",
+      descriptionEn:
+        "EUR/RUB exchange rate forecast. ECB and CBR rates, trade balance, oil dynamics and sanctions risks. AI direction and target range forecast for the chosen date.",
+    },
+    {
+      slug: "cny-rub",
+      title: "Юань / рубль (CNY/RUB)",
+      titleEn: "Yuan / Ruble (CNY/RUB)",
+      currentPrice: 12.5471,
+      vol: 0.006,
+      seed: 203,
+      photoKw: "yuan,ruble,currency",
+      description:
+        "Прогноз курса китайского юаня к рублю (CNY/RUB). Анализ торговых потоков Россия–Китай, валютных интервенций и товарооборота. ИИ-прогноз на выбранную дату с вероятностью направления.",
+      descriptionEn:
+        "CNY/RUB exchange rate forecast. Russia–China trade flows, currency interventions and bilateral trade analysis. AI forecast for the chosen date with direction probability.",
+    },
+    {
+      slug: "eur-usd",
+      title: "Евро / доллар США (EUR/USD)",
+      titleEn: "Euro / US Dollar (EUR/USD)",
+      currentPrice: 1.1564,
+      vol: 0.005,
+      seed: 204,
+      photoKw: "euro,dollar,currency",
+      description:
+        "Прогноз курса евро к доллару (EUR/USD). Анализ денежно-кредитной политики ФРС и ЕЦБ, инфляции и потоков капитала. Прогноз направления и целевого диапазона на дату.",
+      descriptionEn:
+        "EUR/USD exchange rate forecast. Fed and ECB policy, inflation and capital flows analysis. Direction and target range forecast for the date.",
+    },
+    {
+      slug: "gbp-usd",
+      title: "Фунт / доллар США (GBP/USD)",
+      titleEn: "Pound / US Dollar (GBP/USD)",
+      currentPrice: 1.359,
+      vol: 0.006,
+      seed: 205,
+      photoKw: "pound,dollar,banknotes",
+      description:
+        "Прогноз курса британского фунта к доллару (GBP/USD). Учёт решений Банка Англии, инфляции в Великобритании и макро-данных США. ИИ-прогноз на выбранную дату.",
+      descriptionEn:
+        "GBP/USD exchange rate forecast. Bank of England decisions, UK inflation and US macro data. AI forecast for the chosen date.",
+    },
+    {
+      slug: "usd-jpy",
+      title: "Доллар США / иена (USD/JPY)",
+      titleEn: "US Dollar / Yen (USD/JPY)",
+      currentPrice: 159.3272,
+      vol: 0.007,
+      seed: 206,
+      photoKw: "dollar,yen,japan",
+      description:
+        "Прогноз курса доллара США к японской иене (USD/JPY). Анализ политики Банка Японии, спреда доходностей и риск-аппетита рынков. ИИ-прогноз на выбранную дату.",
+      descriptionEn:
+        "USD/JPY exchange rate forecast. Bank of Japan policy, yield spread and market risk appetite analysis. AI forecast for the chosen date.",
+    },
+    {
+      slug: "usd-chf",
+      title: "Доллар США / франк (USD/CHF)",
+      titleEn: "US Dollar / Franc (USD/CHF)",
+      currentPrice: 0.8042,
+      vol: 0.005,
+      seed: 207,
+      photoKw: "dollar,swiss,franc",
+      description:
+        "Прогноз курса доллара США к швейцарскому франку (USD/CHF). Учёт политики ШНБ, статуса франка как защитного актива и ставок ФРС. ИИ-прогноз на выбранную дату.",
+      descriptionEn:
+        "USD/CHF exchange rate forecast. SNB policy, franc safe-haven status and Fed rates. AI forecast for the chosen date.",
+    },
+    {
+      slug: "eur-gbp",
+      title: "Евро / фунт (EUR/GBP)",
+      titleEn: "Euro / Pound (EUR/GBP)",
+      currentPrice: 0.8547,
+      vol: 0.004,
+      seed: 208,
+      photoKw: "euro,pound,banknotes",
+      description:
+        "Прогноз курса евро к британскому фунту (EUR/GBP). Сравнение макро-данных ЕС и Великобритании, ставок ЕЦБ и Банка Англии. ИИ-прогноз направления на дату.",
+      descriptionEn:
+        "EUR/GBP exchange rate forecast. EU vs UK macro data, ECB and BoE rates comparison. AI direction forecast for the date.",
+    },
+    {
+      slug: "eur-jpy",
+      title: "Евро / иена (EUR/JPY)",
+      titleEn: "Euro / Yen (EUR/JPY)",
+      currentPrice: 184.1418,
+      vol: 0.006,
+      seed: 209,
+      photoKw: "euro,yen,japan",
+      description:
+        "Прогноз курса евро к японской иене (EUR/JPY). Анализ ставок ЕЦБ и Банка Японии, глобального риск-аппетита. ИИ-прогноз на выбранную дату с графиком траектории.",
+      descriptionEn:
+        "EUR/JPY exchange rate forecast. ECB and BoJ rates, global risk appetite analysis. AI forecast for the chosen date with a trajectory chart.",
+    },
+    {
+      slug: "aud-usd",
+      title: "Австралийский доллар / USD (AUD/USD)",
+      titleEn: "Australian Dollar / USD (AUD/USD)",
+      currentPrice: 0.7192,
+      vol: 0.007,
+      seed: 210,
+      photoKw: "australian,dollar,currency",
+      description:
+        "Прогноз курса австралийского доллара к доллару США (AUD/USD). Учёт цен на сырьё, ставок РБА и экономики Китая. ИИ-прогноз на выбранную дату.",
+      descriptionEn:
+        "AUD/USD exchange rate forecast. Commodity prices, RBA rates and China economy. AI forecast for the chosen date.",
+    },
+    {
+      slug: "usd-cad",
+      title: "Доллар США / канадский доллар (USD/CAD)",
+      titleEn: "USD / Canadian Dollar (USD/CAD)",
+      currentPrice: 1.3858,
+      vol: 0.006,
+      seed: 211,
+      photoKw: "dollar,canada,currency",
+      description:
+        "Прогноз курса доллара США к канадскому доллару (USD/CAD). Анализ цен на нефть, ставок Банка Канады и торговых отношений США–Канада. ИИ-прогноз на дату.",
+      descriptionEn:
+        "USD/CAD exchange rate forecast. Oil prices, Bank of Canada rates and US–Canada trade relations. AI forecast for the date.",
+    },
+    {
+      slug: "nzd-usd",
+      title: "Новозеландский доллар / USD (NZD/USD)",
+      titleEn: "New Zealand Dollar / USD (NZD/USD)",
+      currentPrice: 0.5953,
+      vol: 0.007,
+      seed: 212,
+      photoKw: "dollar,newzealand",
+      description:
+        "Прогноз курса новозеландского доллара к доллару США (NZD/USD). Учёт ставок РБНЗ, цен на молочную продукцию и глобального риск-аппетита. ИИ-прогноз на выбранную дату.",
+      descriptionEn:
+        "NZD/USD exchange rate forecast. RBNZ rates, dairy prices and global risk appetite. AI forecast for the chosen date.",
+    },
+    {
+      slug: "usd-cny",
+      title: "Доллар США / юань (USD/CNY)",
+      titleEn: "USD / Chinese Yuan (USD/CNY)",
+      currentPrice: 6.7372,
+      vol: 0.004,
+      seed: 213,
+      photoKw: "dollar,yuan,china",
+      description:
+        "Прогноз курса доллара США к китайскому юаню (USD/CNY). Анализ политики Народного банка Китая, торгового баланса и ставок ФРС. ИИ-прогноз на выбранную дату.",
+      descriptionEn:
+        "USD/CNY exchange rate forecast. PBoC policy, trade balance and Fed rates analysis. AI forecast for the chosen date.",
+    },
+    {
+      slug: "usd-try",
+      title: "Доллар США / турецкая лира (USD/TRY)",
+      titleEn: "USD / Turkish Lira (USD/TRY)",
+      currentPrice: 48.1625,
+      vol: 0.01,
+      seed: 214,
+      photoKw: "dollar,lira,turkey",
+      description:
+        "Прогноз курса доллара США к турецкой лире (USD/TRY). Учёт инфляции в Турции, ставок ЦБ Турции и политических рисков. ИИ-прогноз на выбранную дату.",
+      descriptionEn:
+        "USD/TRY exchange rate forecast. Turkish inflation, CBT rates and political risks. AI forecast for the chosen date.",
+    },
+  ];
+
+  for (const p of currencyPairs) {
+    const chartData = historyWalk(p.currentPrice, 40, p.vol, p.seed);
+    await prisma.event.upsert({
+      where: { slug: p.slug },
+      update: {
+        currentPrice: p.currentPrice,
+        chartData,
+      },
+      create: {
+        slug: p.slug,
+        title: p.title,
+        titleEn: p.titleEn,
+        description: p.description,
+        descriptionEn: p.descriptionEn,
+        category: EventCategory.CURRENCY,
+        price: 10,
+        currency: "EUR",
+        currentPrice: p.currentPrice,
+        chartData,
+        imageUrl: `https://loremflickr.com/640/360/${encodeURIComponent(p.photoKw)}`,
+      },
+    });
+  }
+
+  // ---- Динамика фондовых индексов (под «Курсом валют» на странице Экономика) ----
+  // Окно с тремя окошками: акции, мировые биржи, российские биржи.
+  const stockIndexes = [
+    {
+      slug: "stock-dynamics",
+      title: "Динамика акций",
+      titleEn: "Stock Dynamics",
+      currentPrice: 5218.4,
+      vol: 0.011,
+      seed: 301,
+      photoKw: "stocks,market,chart",
+      description:
+        "Прогноз динамики рынка акций: мировые фондовые индексы, отраслевые тренды, корпоративная отчётность и потоки капитала. ИИ-прогноз на выбранную дату с графиком траектории и вероятностью направления.",
+      descriptionEn:
+        "Stock market dynamics forecast: global equity indices, sector trends, corporate earnings and capital flows. AI forecast for the chosen date with a trajectory chart and direction probability.",
+    },
+    {
+      slug: "world-exchanges",
+      title: "Динамика основных показателей мировых бирж",
+      titleEn: "Major World Exchanges",
+      currentPrice: 3450.2,
+      vol: 0.009,
+      seed: 302,
+      photoKw: "world,exchange,stockmarket",
+      description:
+        "Прогноз ключевых показателей мировых бирж (NYSE, NASDAQ, LSE, TSE, Euronext): капитализация, объёмы торгов, динамика индексов. ИИ-прогноз на выбранную дату с вероятностью направления.",
+      descriptionEn:
+        "Forecast of key indicators for major world exchanges (NYSE, NASDAQ, LSE, TSE, Euronext): market cap, trading volumes, index dynamics. AI forecast for the chosen date with direction probability.",
+    },
+    {
+      slug: "russian-exchanges",
+      title: "Динамика основных показателей российских бирж",
+      titleEn: "Russian Exchanges",
+      currentPrice: 3124.8,
+      vol: 0.013,
+      seed: 303,
+      photoKw: "moscow,exchange,russia",
+      description:
+        "Прогноз основных показателей российских бирж (МосБиржа, СПБ Биржа): индекс IMOEX, ликвидность, объёмы торгов, ставка ЦБ. ИИ-прогноз на выбранную дату с графиком траектории.",
+      descriptionEn:
+        "Forecast of key indicators for Russian exchanges (MOEX, SPB Exchange): IMOEX index, liquidity, trading volumes, CBR rate. AI forecast for the chosen date with a trajectory chart.",
+    },
+  ];
+
+  for (const ix of stockIndexes) {
+    const chartData = historyWalk(ix.currentPrice, 40, ix.vol, ix.seed);
+    await prisma.event.upsert({
+      where: { slug: ix.slug },
+      update: {
+        currentPrice: ix.currentPrice,
+        chartData,
+      },
+      create: {
+        slug: ix.slug,
+        title: ix.title,
+        titleEn: ix.titleEn,
+        description: ix.description,
+        descriptionEn: ix.descriptionEn,
+        category: EventCategory.OTHER,
+        price: 10,
+        currency: "EUR",
+        currentPrice: ix.currentPrice,
+        chartData,
+        imageUrl: `https://loremflickr.com/640/360/${encodeURIComponent(ix.photoKw)}`,
+      },
+    });
+  }
+
   // ---- Demo forecasts for the demo user (leaderboard / dashboard demo) ----
   const gold = await prisma.event.findUniqueOrThrow({ where: { slug: "gold" } });
   const btc = await prisma.event.findUniqueOrThrow({ where: { slug: "bitcoin" } });

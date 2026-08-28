@@ -78,7 +78,7 @@ export default function BuyForecastCard({
             <div>
               <p className="text-xs text-white/50">{dict.priceLabel}</p>
               <p className="text-2xl font-bold text-accent">
-                {price} {currency}
+                {price === 10 ? "10$ / 10€ / 10USDT" : `${price} ${currency}`}
               </p>
             </div>
           </div>

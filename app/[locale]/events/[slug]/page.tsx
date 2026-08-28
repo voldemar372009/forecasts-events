@@ -61,7 +61,7 @@ export default async function EventPage({
           <div className="text-right">
             <p className="text-xs text-white/60">{dict.events.from}</p>
             <p className="text-2xl font-bold text-accent">
-              {event.price} {event.currency}
+              {event.price === 10 ? "10$ / 10€ / 10USDT" : `${event.price} ${event.currency}`}
             </p>
           </div>
         </div>
