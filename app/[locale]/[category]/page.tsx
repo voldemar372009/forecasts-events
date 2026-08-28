@@ -6,6 +6,7 @@ import MarketsGrid from "@/components/MarketsGrid";
 import CurrencyRates from "@/components/CurrencyRates";
 import StockIndexDynamics from "@/components/StockIndexDynamics";
 import PoliticsGeopolitics from "@/components/PoliticsGeopolitics";
+import SportsMain from "@/components/SportsMain";
 import CustomForecastWindow from "@/components/CustomForecastWindow";
 import type { EventCardData } from "@/components/EventCard";
 
@@ -54,6 +55,26 @@ export default async function CategoryPage({
   ).filter((e): e is NonNullable<typeof e> => e !== null);
 
   const politicsCards: EventCardData[] = politicsEvents.map(toCard);
+
+  // Окна «Спорта»: топ-турниры, популярные лиги, киберспорт, индивидуальные достижения.
+  const sportsGroups: Record<"top" | "leagues" | "esports" | "achievements", EventCardData[]> = {
+    top: [],
+    leagues: [],
+    esports: [],
+    achievements: [],
+  };
+  const sportsSlugs: Record<keyof typeof sportsGroups, string[]> = {
+    top: ["world-cup", "olympic-games", "super-bowl"],
+    leagues: ["nba", "premier-league", "nfl", "euro-cups"],
+    esports: ["dota-2", "league-of-legends", "cs2"],
+    achievements: ["sports-records", "player-transfers", "mvp-awards"],
+  };
+  for (const [group, slugs] of Object.entries(sportsSlugs) as [keyof typeof sportsGroups, string[]][]) {
+    const found = (
+      await Promise.all(slugs.map((slug) => getEventBySlug(slug, locale)))
+    ).filter((e): e is NonNullable<typeof e> => e !== null);
+    sportsGroups[group] = found.map(toCard);
+  }
 
   const cardLabels = {
     from: dict.events.from,
@@ -149,6 +170,64 @@ export default async function CategoryPage({
               subtitle: dict.politics.subtitle,
             }}
             cards={politicsCards}
+            cardLabels={cardLabels}
+          />
+
+          {/* Своё окно прогноза — точная копия с главной страницы */}
+          <div id="custom-forecast" className="scroll-mt-24">
+            <CustomForecastWindow
+              locale={locale}
+              dict={{
+                title: dict.customForecast.title,
+                subtitle: dict.customForecast.subtitle,
+                subtitle2: dict.customForecast.subtitle2,
+                queryLabel: dict.customForecast.queryLabel,
+                queryPlaceholder: dict.customForecast.queryPlaceholder,
+                queryExample: dict.customForecast.queryExample,
+                chooseDate: dict.customForecast.chooseDate,
+                dateHint: dict.customForecast.dateHint,
+                currentPrice: dict.customForecast.currentPrice,
+                autoSource: dict.customForecast.autoSource,
+                analysis: dict.customForecast.analysis,
+                loading: dict.customForecast.loading,
+                noData: dict.customForecast.noData,
+                generate: dict.customForecast.generate,
+                generating: dict.customForecast.generating,
+                nameRequired: dict.customForecast.nameRequired,
+                dateRequired: dict.customForecast.dateRequired,
+                error: dict.customForecast.error,
+                priceLabel: dict.customForecast.priceLabel,
+                note: dict.customForecast.note,
+                support: dict.customForecast.support,
+                resistance: dict.customForecast.resistance,
+                change30d: dict.customForecast.change30d,
+                rsi: dict.customForecast.rsi,
+              }}
+            />
+          </div>
+        </>
+      )}
+
+      {category === "SPORTS" && (
+        <>
+          {/* Главное окошко «Спорт» с окнами внутри:
+              Чемпионат мира по футболу, Олимпийские игры, Супербоул,
+              Популярные лиги (НБА, АПЛ, НФЛ, Еврокубки),
+              Киберспорт (Dota 2, League of Legends, CS2),
+              Индивидуальные достижения (рекорды, переходы игроков, награды MVP) */}
+          <SportsMain
+            locale={locale}
+            dict={{
+              title: dict.sports.title,
+              subtitle: dict.sports.subtitle,
+              popularLeagues: dict.sports.popularLeagues,
+              popularLeaguesSubtitle: dict.sports.popularLeaguesSubtitle,
+              esports: dict.sports.esports,
+              esportsSubtitle: dict.sports.esportsSubtitle,
+              achievements: dict.sports.achievements,
+              achievementsSubtitle: dict.sports.achievementsSubtitle,
+            }}
+            groups={sportsGroups}
             cardLabels={cardLabels}
           />
 

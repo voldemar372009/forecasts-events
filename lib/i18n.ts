@@ -98,6 +98,16 @@ const ru = {
     title: "Политика и геополитика",
     subtitle: "Прогнозы по президентским и парламентским выборам, праймериз и ключевым геополитическим событиям",
   },
+  sports: {
+    title: "Спорт",
+    subtitle: "Прогнозы на главные спортивные события мира — турниры, лиги, киберспорт и индивидуальные достижения",
+    popularLeagues: "Популярные лиги",
+    popularLeaguesSubtitle: "НБА, АПЛ, НФЛ, Еврокубки",
+    esports: "Киберспорт",
+    esportsSubtitle: "Dota 2, League of Legends, CS2",
+    achievements: "Индивидуальные достижения",
+    achievementsSubtitle: "Рекорды, переходы игроков, награды MVP",
+  },
   eventPage: {
     back: "← Все события",
     description: "Описание",
@@ -351,6 +361,16 @@ const en: Dict = {
     title: "Politics & Geopolitics",
     subtitle: "Forecasts for presidential and parliamentary elections, primaries and key geopolitical events",
   },
+  sports: {
+    title: "Sports",
+    subtitle: "Forecasts for the world's biggest sporting events — tournaments, leagues, esports and individual achievements",
+    popularLeagues: "Popular Leagues",
+    popularLeaguesSubtitle: "NBA, Premier League, NFL, European Cups",
+    esports: "Esports",
+    esportsSubtitle: "Dota 2, League of Legends, CS2",
+    achievements: "Individual Achievements",
+    achievementsSubtitle: "Records, player transfers, MVP awards",
+  },
   eventPage: {
     back: "← All events",
     description: "Description",
@@ -601,6 +621,16 @@ const es: Dict = {
   politics: {
     title: "Política y geopolítica",
     subtitle: "Predicciones sobre elecciones presidenciales y parlamentarias, primarias y eventos geopolíticos clave",
+  },
+  sports: {
+    title: "Deportes",
+    subtitle: "Pronósticos sobre los principales eventos deportivos del mundo: torneos, ligas, deportes electrónicos y logros individuales",
+    popularLeagues: "Ligas populares",
+    popularLeaguesSubtitle: "NBA, Premier League, NFL, Copas europeas",
+    esports: "Deportes electrónicos",
+    esportsSubtitle: "Dota 2, League of Legends, CS2",
+    achievements: "Logros individuales",
+    achievementsSubtitle: "Récords, traspasos de jugadores, premios MVP",
   },
   eventPage: {
     back: "← Todos los eventos",
@@ -853,6 +883,16 @@ const it: Dict = {
     title: "Politica e geopolitica",
     subtitle: "Previsioni su elezioni presidenziali e parlamentari, primarie ed eventi geopolitici chiave",
   },
+  sports: {
+    title: "Sport",
+    subtitle: "Previsioni sui principali eventi sportivi del mondo: tornei, campionati, esports e risultati individuali",
+    popularLeagues: "Campionati popolari",
+    popularLeaguesSubtitle: "NBA, Premier League, NFL, Coppe europee",
+    esports: "Esports",
+    esportsSubtitle: "Dota 2, League of Legends, CS2",
+    achievements: "Risultati individuali",
+    achievementsSubtitle: "Record, trasferimenti di giocatori, premi MVP",
+  },
   eventPage: {
     back: "← Tutti gli eventi",
     description: "Descrizione",
@@ -1104,6 +1144,16 @@ const fr: Dict = {
     title: "Politique et géopolitique",
     subtitle: "Prévisions sur les élections présidentielles et parlementaires, les primaires et les événements géopolitiques clés",
   },
+  sports: {
+    title: "Sport",
+    subtitle: "Prévisions sur les plus grands événements sportifs du monde : tournois, championnats, esports et exploits individuels",
+    popularLeagues: "Championnats populaires",
+    popularLeaguesSubtitle: "NBA, Premier League, NFL, Coupes d'Europe",
+    esports: "Esports",
+    esportsSubtitle: "Dota 2, League of Legends, CS2",
+    achievements: "Exploits individuels",
+    achievementsSubtitle: "Records, transferts de joueurs, prix MVP",
+  },
   eventPage: {
     back: "← Tous les événements",
     description: "Description",
@@ -1354,6 +1404,16 @@ const de: Dict = {
   politics: {
     title: "Politik und Geopolitik",
     subtitle: "Prognosen zu Präsidentschafts- und Parlamentswahlen, Vorwahlen und wichtigen geopolitischen Ereignissen",
+  },
+  sports: {
+    title: "Sport",
+    subtitle: "Prognosen zu den wichtigsten Sportereignissen der Welt — Turniere, Ligen, Esports und individuelle Leistungen",
+    popularLeagues: "Beliebte Ligen",
+    popularLeaguesSubtitle: "NBA, Premier League, NFL, Europapokale",
+    esports: "Esports",
+    esportsSubtitle: "Dota 2, League of Legends, CS2",
+    achievements: "Individuelle Leistungen",
+    achievementsSubtitle: "Rekorde, Spielertransfers, MVP-Auszeichnungen",
   },
   eventPage: {
     back: "← Alle Ereignisse",

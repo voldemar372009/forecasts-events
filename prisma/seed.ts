@@ -641,6 +641,207 @@ async function main() {
     });
   }
 
+  // ---- Спорт (главное окно «Спорт» на странице категории Спорт) ----
+  // Окна: Чемпионат мира по футболу, Олимпийские игры, Супербоул,
+  // «Популярные лиги» (НБА, АПЛ, НФЛ, Еврокубки),
+  // «Киберспорт» (Dota 2, League of Legends, CS2),
+  // «Индивидуальные достижения» (Рекорды, Переходы игроков, Награды MVP).
+  const sportsEvents = [
+    {
+      slug: "world-cup",
+      title: "Чемпионат мира по футболу",
+      titleEn: "FIFA World Cup",
+      currentPrice: 62.4,
+      vol: 0.02,
+      seed: 501,
+      photoKw: "football,world,cup,stadium",
+      description:
+        "Прогноз по чемпионату мира по футболу: фавориты турнира, шансы сборных на победу, выход из группы, сценарии плей-офф и влияние на букмекерские рынки. ИИ-прогноз на выбранную дату с графиком траектории и вероятностью направления.",
+      descriptionEn:
+        "FIFA World Cup forecast: tournament favourites, national teams' chances of winning, group stage exits, playoff scenarios and the impact on betting markets. AI forecast for the chosen date with a trajectory chart and direction probability.",
+    },
+    {
+      slug: "olympic-games",
+      title: "Олимпийские игры",
+      titleEn: "Olympic Games",
+      currentPrice: 58.7,
+      vol: 0.018,
+      seed: 502,
+      photoKw: "olympic,games,stadium,torch",
+      description:
+        "Прогноз по Олимпийским играм: медальный зачёт, шансы сборных и спортсменов, рекорды, посещаемость и влияние на экономику страны-хозяйки. ИИ-прогноз на выбранную дату с вероятностью направления и ключевыми сценариями.",
+      descriptionEn:
+        "Olympic Games forecast: medal table, chances of teams and athletes, records, attendance and the impact on the host country's economy. AI forecast for the chosen date with direction probability and key scenarios.",
+    },
+    {
+      slug: "super-bowl",
+      title: "Супербоул",
+      titleEn: "Super Bowl",
+      currentPrice: 55.2,
+      vol: 0.025,
+      seed: 503,
+      photoKw: "superbowl,american,football,stadium",
+      description:
+        "Прогноз по Супербоулу: шансы команд на победу, тоталы, рекламный рынок, шоу в перерыве и рейтинги трансляции. ИИ-прогноз на выбранную дату с графиком траектории и вероятностью направления.",
+      descriptionEn:
+        "Super Bowl forecast: teams' chances of winning, totals, the advertising market, the halftime show and broadcast ratings. AI forecast for the chosen date with a trajectory chart and direction probability.",
+    },
+    {
+      slug: "nba",
+      title: "НБА",
+      titleEn: "NBA",
+      currentPrice: 51.9,
+      vol: 0.02,
+      seed: 504,
+      photoKw: "nba,basketball,arena",
+      description:
+        "Прогноз по НБА: победитель сезона и плей-офф, лидеры конференций, статистика игроков, обмены и травмы. ИИ-прогноз на выбранную дату с вероятностью направления и ключевыми уровнями.",
+      descriptionEn:
+        "NBA forecast: season and playoff winner, conference leaders, player statistics, trades and injuries. AI forecast for the chosen date with direction probability and key levels.",
+    },
+    {
+      slug: "premier-league",
+      title: "АПЛ (Английская Премьер-лига)",
+      titleEn: "Premier League",
+      currentPrice: 53.6,
+      vol: 0.02,
+      seed: 505,
+      photoKw: "premier,league,football,england",
+      description:
+        "Прогноз по Английской Премьер-лиге: чемпион, зоны Лиги чемпионов и вылета, топ-бомбардир, результаты туров. ИИ-прогноз на выбранную дату с графиком траектории и вероятностью направления.",
+      descriptionEn:
+        "Premier League forecast: champion, Champions League and relegation zones, top scorer, matchweek results. AI forecast for the chosen date with a trajectory chart and direction probability.",
+    },
+    {
+      slug: "nfl",
+      title: "НФЛ",
+      titleEn: "NFL",
+      currentPrice: 54.1,
+      vol: 0.022,
+      seed: 506,
+      photoKw: "nfl,american,football,field",
+      description:
+        "Прогноз по НФЛ: победитель дивизионов и Супербоула, статистика команд, драфт, травмы ключевых игроков. ИИ-прогноз на выбранную дату с вероятностью направления и ключевыми сценариями.",
+      descriptionEn:
+        "NFL forecast: division and Super Bowl winner, team statistics, the draft, key player injuries. AI forecast for the chosen date with direction probability and key scenarios.",
+    },
+    {
+      slug: "euro-cups",
+      title: "Еврокубки (Лига чемпионов и Лига Европы)",
+      titleEn: "European Cups (Champions League & Europa League)",
+      currentPrice: 52.8,
+      vol: 0.021,
+      seed: 507,
+      photoKw: "champions,league,football,europe",
+      description:
+        "Прогноз по еврокубкам: победитель Лиги чемпионов и Лиги Европы, выход из групп, жеребьёвки плей-офф, рейтинг лиг УЕФА. ИИ-прогноз на выбранную дату с графиком траектории.",
+      descriptionEn:
+        "European cups forecast: Champions League and Europa League winner, group stage exits, playoff draws, UEFA coefficient rankings. AI forecast for the chosen date with a trajectory chart.",
+    },
+    {
+      slug: "dota-2",
+      title: "Dota 2 (The International)",
+      titleEn: "Dota 2 (The International)",
+      currentPrice: 56.3,
+      vol: 0.03,
+      seed: 508,
+      photoKw: "dota2,esports,cybersport,gaming",
+      description:
+        "Прогноз по киберспортивной дисциплине Dota 2: победитель The International и мейджоров, состав команд, мета и трансферы игроков. ИИ-прогноз на выбранную дату с вероятностью направления.",
+      descriptionEn:
+        "Dota 2 esports forecast: The International and majors winner, team rosters, meta and player transfers. AI forecast for the chosen date with direction probability.",
+    },
+    {
+      slug: "league-of-legends",
+      title: "League of Legends (Worlds)",
+      titleEn: "League of Legends (Worlds)",
+      currentPrice: 57.5,
+      vol: 0.028,
+      seed: 509,
+      photoKw: "league,of,legends,esports",
+      description:
+        "Прогноз по League of Legends: победитель Worlds и региональных лиг, состав команд, мета-патчи и результаты плей-офф. ИИ-прогноз на выбранную дату с графиком траектории и вероятностью направления.",
+      descriptionEn:
+        "League of Legends forecast: Worlds and regional leagues winner, team rosters, meta patches and playoff results. AI forecast for the chosen date with a trajectory chart and direction probability.",
+    },
+    {
+      slug: "cs2",
+      title: "CS2 (Counter-Strike 2)",
+      titleEn: "CS2 (Counter-Strike 2)",
+      currentPrice: 55.8,
+      vol: 0.032,
+      seed: 510,
+      photoKw: "cs2,counter,strike,esports",
+      description:
+        "Прогноз по киберспортивной дисциплине CS2: победители мейджоров и топ-турниров, рейтинг команд HLTV, составы и переходы игроков. ИИ-прогноз на выбранную дату с вероятностью направления.",
+      descriptionEn:
+        "CS2 esports forecast: majors and top tournaments winners, HLTV team rankings, rosters and player transfers. AI forecast for the chosen date with direction probability.",
+    },
+    {
+      slug: "sports-records",
+      title: "Рекорды в спорте",
+      titleEn: "Sports Records",
+      currentPrice: 50.4,
+      vol: 0.02,
+      seed: 511,
+      photoKw: "sports,record,trophy,athlete",
+      description:
+        "Прогноз по рекордам в спорте: мировые и олимпийские рекорды, рекорды результативности, достижения в лигах и турнирах. ИИ-прогноз на выбранную дату с вероятностью направления.",
+      descriptionEn:
+        "Sports records forecast: world and Olympic records, scoring records, achievements in leagues and tournaments. AI forecast for the chosen date with direction probability.",
+    },
+    {
+      slug: "player-transfers",
+      title: "Переходы игроков",
+      titleEn: "Player Transfers",
+      currentPrice: 51.2,
+      vol: 0.024,
+      seed: 512,
+      photoKw: "football,transfer,player,contract",
+      description:
+        "Прогноз по переходам игроков: крупнейшие трансферы, суммы сделок, переходы свободных агентов и влияние на шансы команд. ИИ-прогноз на выбранную дату с графиком траектории.",
+      descriptionEn:
+        "Player transfers forecast: biggest transfers, deal values, free-agent moves and their impact on teams' chances. AI forecast for the chosen date with a trajectory chart.",
+    },
+    {
+      slug: "mvp-awards",
+      title: "Награды MVP",
+      titleEn: "MVP Awards",
+      currentPrice: 49.7,
+      vol: 0.02,
+      seed: 513,
+      photoKw: "mvp,award,trophy,player",
+      description:
+        "Прогноз по наградам MVP: лауреаты в лигах (НБА, НФЛ, АПЛ и другие), статистика претендентов, голосование и сценарии. ИИ-прогноз на выбранную дату с вероятностью направления.",
+      descriptionEn:
+        "MVP awards forecast: winners in leagues (NBA, NFL, Premier League and others), candidates' statistics, voting and scenarios. AI forecast for the chosen date with direction probability.",
+    },
+  ];
+
+  for (const s of sportsEvents) {
+    const chartData = historyWalk(s.currentPrice, 40, s.vol, s.seed);
+    await prisma.event.upsert({
+      where: { slug: s.slug },
+      update: {
+        currentPrice: s.currentPrice,
+        chartData,
+      },
+      create: {
+        slug: s.slug,
+        title: s.title,
+        titleEn: s.titleEn,
+        description: s.description,
+        descriptionEn: s.descriptionEn,
+        category: EventCategory.SPORTS,
+        price: 10,
+        currency: "EUR",
+        currentPrice: s.currentPrice,
+        chartData,
+        imageUrl: `https://loremflickr.com/640/360/${encodeURIComponent(s.photoKw)}`,
+      },
+    });
+  }
+
   // ---- Demo forecasts for the demo user (leaderboard / dashboard demo) ----
   const gold = await prisma.event.findUniqueOrThrow({ where: { slug: "gold" } });
   const btc = await prisma.event.findUniqueOrThrow({ where: { slug: "bitcoin" } });
