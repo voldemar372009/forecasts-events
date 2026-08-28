@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { getSessionUser } from "@/lib/auth";
 import { getDict, isLocale, defaultLocale } from "@/lib/i18n";
 import { CATEGORIES } from "@/lib/categories";
-import AdminPanel, { type AdminEvent, type AdminPayment } from "@/components/AdminPanel";
+import AdminPanel, { type AdminEvent, type AdminPayment, type AdminUser } from "@/components/AdminPanel";
 
 export const dynamic = "force-dynamic";
 
@@ -14,7 +14,7 @@ export default async function AdminPage({ params }: { params: { locale: string }
   if (!user) redirect(`/${locale}/auth/login?next=/${locale}/admin`);
   if (user.role !== "ADMIN") redirect(`/${locale}`);
 
-  const [eventsRaw, paymentsRaw] = await Promise.all([
+  const [eventsRaw, paymentsRaw, usersRaw] = await Promise.all([
     prisma.event.findMany({
       orderBy: { createdAt: "desc" },
       include: { _count: { select: { forecasts: true, payments: true } } },
@@ -26,6 +26,10 @@ export default async function AdminPage({ params }: { params: { locale: string }
         user: { select: { name: true, email: true } },
         event: { select: { title: true, slug: true } },
       },
+    }),
+    prisma.user.findMany({
+      orderBy: { createdAt: "desc" },
+      include: { _count: { select: { forecasts: true, payments: true } } },
     }),
   ]);
 
@@ -56,12 +60,25 @@ export default async function AdminPage({ params }: { params: { locale: string }
     createdAt: p.createdAt.toISOString(),
   }));
 
+  const users: AdminUser[] = usersRaw.map((u) => ({
+    id: u.id,
+    email: u.email,
+    name: u.name,
+    role: u.role,
+    blocked: u.blocked,
+    forecastCount: u._count.forecasts,
+    paymentCount: u._count.payments,
+    createdAt: u.createdAt.toISOString(),
+    isSelf: u.id === user.id,
+  }));
+
   return (
     <div className="fade-in">
       <AdminPanel
         categories={CATEGORIES.map((c) => ({ value: c, label: dict.category[c] ?? c }))}
         initialEvents={events}
         initialPayments={payments}
+        initialUsers={users}
         dict={dict.admin}
       />
     </div>

@@ -53,6 +53,7 @@ model User {
   name         String
   passwordHash String
   role         UserRole   @default(USER)
+  blocked      Boolean    @default(false)
   createdAt    DateTime   @default(now())
   forecasts    Forecast[]
   payments     Payment[]
@@ -120,4 +121,14 @@ model Payment {
 
   @@index([userId])
   @@index([eventId])
+}
+
+model PageView {
+  id        String   @id @default(cuid())
+  path      String
+  ip        String?
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([path])
 }

@@ -33,6 +33,13 @@ yarn-error.log*
 .pgdata
 pgserver.log
 
+# runtime / diagnostics
+server*.log
+server*.err.log
+server*.out.log
+prisma-diag.cjs
+scripts/
+
 # vercel
 .vercel
 

@@ -1,6 +1,7 @@
 import { SignJWT, jwtVerify } from "jose";
 import bcrypt from "bcryptjs";
 import { cookies } from "next/headers";
+import { prisma } from "./prisma";
 
 export const SESSION_COOKIE = "session";
 
@@ -52,7 +53,11 @@ export async function getSessionUser(): Promise<SessionUser | null> {
   const store = cookies();
   const token = store.get(SESSION_COOKIE)?.value;
   if (!token) return null;
-  return verifySessionToken(token);
+  const session = await verifySessionToken(token);
+  if (!session) return null;
+  const db = await prisma.user.findUnique({ where: { id: session.id }, select: { blocked: true } });
+  if (db?.blocked) return null;
+  return session;
 }
 
 export function setSessionCookie(token: string): void {

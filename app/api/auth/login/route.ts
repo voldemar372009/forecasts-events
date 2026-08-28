@@ -12,6 +12,9 @@ export async function POST(req: NextRequest) {
     if (!user || !(await verifyPassword(password, user.passwordHash))) {
       return NextResponse.json({ error: "wrongCredentials" }, { status: 401 });
     }
+    if (user.blocked) {
+      return NextResponse.json({ error: "blocked" }, { status: 403 });
+    }
 
     const token = await createSessionToken({
       id: user.id,
