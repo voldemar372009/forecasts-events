@@ -72,6 +72,7 @@ const ru = {
     CLIMATE: "Климат и экология",
     SOCIETY: "Социальные тренды и общество",
     HEALTH: "Здоровье и наука",
+    CULTURE: "Культура",
   },
   currency: {
     title: "Курс валют",
@@ -115,6 +116,16 @@ const ru = {
   health: {
     title: "Здоровье и наука",
     subtitle: "Прогнозы по вспышкам заболеваний, распространению вирусов, одобрению новых лекарств и вакцин, медицинским и научным открытиям",
+  },
+  culture: {
+    title: "Культура",
+    subtitle: "Прогнозы по кинопремиям, кассовым сборам, финалам реалити-шоу, скандалам и слухам о знаменитостях",
+    awards: "Кинопремии",
+    awardsSubtitle: "Оскар, Грэмми, Эмми",
+    cinemaTv: "Кино и ТВ",
+    cinemaTvSubtitle: "Кассовые сборы, финалы реалити-шоу",
+    celebrity: "Светская жизнь",
+    celebritySubtitle: "Скандалы, слухи о знаменитостях",
   },
   eventPage: {
     back: "← Все события",
@@ -343,6 +354,7 @@ const en: Dict = {
     CLIMATE: "Climate & Ecology",
     SOCIETY: "Social Trends & Society",
     HEALTH: "Health & Science",
+    CULTURE: "Culture",
   },
   currency: {
     title: "Currency Rates",
@@ -386,6 +398,16 @@ const en: Dict = {
   health: {
     title: "Health & Science",
     subtitle: "Forecasts on disease outbreaks, virus spread, approval of new drugs and vaccines, medical and scientific discoveries",
+  },
+  culture: {
+    title: "Culture",
+    subtitle: "Forecasts for film awards, box office records, reality show finals, scandals and celebrity rumors",
+    awards: "Film Awards",
+    awardsSubtitle: "Oscars, Grammys, Emmys",
+    cinemaTv: "Cinema & TV",
+    cinemaTvSubtitle: "Box office, reality show finals",
+    celebrity: "Celebrity Life",
+    celebritySubtitle: "Scandals, celebrity rumors",
   },
   eventPage: {
     back: "← All events",
@@ -612,6 +634,7 @@ const es: Dict = {
     CLIMATE: "Clima y ecología",
     SOCIETY: "Tendencias sociales y sociedad",
     HEALTH: "Salud y ciencia",
+    CULTURE: "Cultura",
   },
   currency: {
     title: "Tipos de cambio",
@@ -655,6 +678,16 @@ const es: Dict = {
   health: {
     title: "Salud y ciencia",
     subtitle: "Pronósticos sobre brotes de enfermedades, propagación de virus, aprobación de nuevos medicamentos y vacunas, descubrimientos médicos y científicos",
+  },
+  culture: {
+    title: "Cultura",
+    subtitle: "Predicciones sobre premios de cine, taquilla, finales de reality shows, escándalos y rumores de famosos",
+    awards: "Premios de cine",
+    awardsSubtitle: "Óscar, Grammy, Emmy",
+    cinemaTv: "Cine y TV",
+    cinemaTvSubtitle: "Taquilla, finales de reality shows",
+    celebrity: "Vida de famosos",
+    celebritySubtitle: "Escándalos, rumores de famosos",
   },
   eventPage: {
     back: "← Todos los eventos",
@@ -881,6 +914,7 @@ const it: Dict = {
     CLIMATE: "Clima e ecologia",
     SOCIETY: "Tendenze sociali e società",
     HEALTH: "Salute e scienza",
+    CULTURE: "Cultura",
   },
   currency: {
     title: "Tassi di cambio",
@@ -924,6 +958,16 @@ const it: Dict = {
   health: {
     title: "Salute e scienza",
     subtitle: "Previsioni su focolai di malattie, diffusione di virus, approvazione di nuovi farmaci e vaccini, scoperte mediche e scientifiche",
+  },
+  culture: {
+    title: "Cultura",
+    subtitle: "Previsioni su premi cinematografici, incassi al botteghino, finali di reality show, scandali e voci sulle celebrità",
+    awards: "Premi cinematografici",
+    awardsSubtitle: "Oscar, Grammy, Emmy",
+    cinemaTv: "Cinema e TV",
+    cinemaTvSubtitle: "Incassi al botteghino, finali di reality show",
+    celebrity: "Vita delle celebrità",
+    celebritySubtitle: "Scandali, voci sulle celebrità",
   },
   eventPage: {
     back: "← Tutti gli eventi",
@@ -1150,6 +1194,7 @@ const fr: Dict = {
     CLIMATE: "Climat et écologie",
     SOCIETY: "Tendances sociales et société",
     HEALTH: "Santé et science",
+    CULTURE: "Culture",
   },
   currency: {
     title: "Taux de change",
@@ -1193,6 +1238,16 @@ const fr: Dict = {
   health: {
     title: "Santé et science",
     subtitle: "Prévisions sur les épidémies, la propagation des virus, l'approbation de nouveaux médicaments et vaccins, les découvertes médicales et scientifiques",
+  },
+  culture: {
+    title: "Culture",
+    subtitle: "Prévisions sur les prix du cinéma, les recettes au box-office, les finales de téléréalité, les scandales et les rumeurs sur les célébrités",
+    awards: "Prix du cinéma",
+    awardsSubtitle: "Oscars, Grammys, Emmys",
+    cinemaTv: "Cinéma et TV",
+    cinemaTvSubtitle: "Box-office, finales de téléréalité",
+    celebrity: "Vie des célébrités",
+    celebritySubtitle: "Scandales, rumeurs sur les célébrités",
   },
   eventPage: {
     back: "← Tous les événements",
@@ -1419,6 +1474,7 @@ const de: Dict = {
     CLIMATE: "Klima und Ökologie",
     SOCIETY: "Soziale Trends und Gesellschaft",
     HEALTH: "Gesundheit und Wissenschaft",
+    CULTURE: "Kultur",
   },
   currency: {
     title: "Wechselkurse",
@@ -1462,6 +1518,16 @@ const de: Dict = {
   health: {
     title: "Gesundheit und Wissenschaft",
     subtitle: "Prognosen zu Krankheitsausbrüchen, Virusausbreitung, Zulassung neuer Medikamente und Impfstoffe, medizinischen und wissenschaftlichen Entdeckungen",
+  },
+  culture: {
+    title: "Kultur",
+    subtitle: "Prognosen zu Filmpreisen, Kassenerfolgen, Reality-Show-Finales, Skandalen und Promi-Gerüchten",
+    awards: "Filmpreise",
+    awardsSubtitle: "Oscar, Grammy, Emmy",
+    cinemaTv: "Kino und TV",
+    cinemaTvSubtitle: "Kassenerfolge, Reality-Show-Finales",
+    celebrity: "Promi-Leben",
+    celebritySubtitle: "Skandale, Promi-Gerüchte",
   },
   eventPage: {
     back: "← Alle Ereignisse",

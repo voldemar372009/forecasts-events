@@ -32,6 +32,7 @@ enum EventCategory {
   CLIMATE
   SOCIETY
   HEALTH
+  CULTURE
 }
 
 enum ForecastStatus {

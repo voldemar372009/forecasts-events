@@ -13,6 +13,7 @@ const CATEGORY_ICONS: Record<string, string> = {
   CLIMATE: "🌍",
   SOCIETY: "👥",
   HEALTH: "🧬",
+  CULTURE: "🎬",
 };
 
 export default async function LocaleLayout({

@@ -11,6 +11,7 @@ export const CATEGORIES = [
   "CLIMATE",
   "SOCIETY",
   "HEALTH",
+  "CULTURE",
 ] as const;
 export type CategoryId = (typeof CATEGORIES)[number];
 
@@ -22,6 +23,7 @@ export const SIDEBAR_CATEGORIES: CategoryId[] = [
   "CLIMATE",
   "SOCIETY",
   "HEALTH",
+  "CULTURE",
 ];
 
 const categoryColors: Record<CategoryId, { c1: string; c2: string; icon: string }> = {
@@ -37,6 +39,7 @@ const categoryColors: Record<CategoryId, { c1: string; c2: string; icon: string 
   CLIMATE: { c1: "#0EA5E9", c2: "#0C4A6E", icon: "Clm" },
   SOCIETY: { c1: "#EC4899", c2: "#831843", icon: "Soc" },
   HEALTH: { c1: "#A855F7", c2: "#581C87", icon: "Hl" },
+  CULTURE: { c1: "#F472B6", c2: "#9D174D", icon: "Cul" },
 };
 
 export function categoryImage(category: string, label?: string): string {
@@ -59,6 +62,7 @@ const photoKeywords: Record<CategoryId, string> = {
   CLIMATE: "climate,nature,weather",
   SOCIETY: "society,people,community",
   HEALTH: "health,science,medicine",
+  CULTURE: "culture,cinema,film,music,celebrity",
 };
 
 /** Реальное фото по категории (бесплатный LoremFlickr по ключевым словам). */
@@ -116,6 +120,13 @@ const keywordMap: Record<CategoryId, string[]> = {
     "здоров", "медицин", "наук", "вакцин", "science", "medicine", "health",
     "healthcare", "исследован", "открыти", "лекарств",
   ],
+  CULTURE: [
+    "культур", "кино", "фильм", "оскар", "oscar", "грэмми", "grammy", "эмми",
+    "emmy", "преми", "award", "церемони", "кинофестивал", "box office", "прокат",
+    "реалити", "скандал", "знаменитост", "celebrity", "шоу", "сериал", "музык",
+    "концерт", "театр", "выставк", "фестивал", "культура", "cinema", "movie",
+    "music", "culture",
+  ],
   OTHER: [],
 };
 
@@ -131,6 +142,7 @@ const detectOrder: CategoryId[] = [
   "CLIMATE",
   "SOCIETY",
   "HEALTH",
+  "CULTURE",
 ];
 
 export function detectCategory(title: string): CategoryId | null {

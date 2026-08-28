@@ -9,6 +9,7 @@ import PoliticsGeopolitics from "@/components/PoliticsGeopolitics";
 import SportsMain from "@/components/SportsMain";
 import SocialTrendsMain from "@/components/SocialTrendsMain";
 import HealthScienceMain from "@/components/HealthScienceMain";
+import CultureMain from "@/components/CultureMain";
 import CustomForecastWindow from "@/components/CustomForecastWindow";
 import type { EventCardData } from "@/components/EventCard";
 
@@ -93,6 +94,26 @@ export default async function CategoryPage({
 
   const healthCards: EventCardData[] = healthEvents.map(toCard);
 
+  // Окна «Культуры»: кинопремии (Оскар, Грэмми, Эмми),
+  // кино и ТВ (кассовые сборы, финалы реалити-шоу),
+  // светская жизнь (скандалы, слухи о знаменитостях).
+  const cultureGroups: Record<"awards" | "cinemaTv" | "celebrity", EventCardData[]> = {
+    awards: [],
+    cinemaTv: [],
+    celebrity: [],
+  };
+  const cultureSlugs: Record<keyof typeof cultureGroups, string[]> = {
+    awards: ["oscar-awards", "grammy-awards", "emmy-awards"],
+    cinemaTv: ["box-office-records", "reality-show-finals"],
+    celebrity: ["scandals", "celebrity-rumors"],
+  };
+  for (const [group, slugs] of Object.entries(cultureSlugs) as [keyof typeof cultureGroups, string[]][]) {
+    const found = (
+      await Promise.all(slugs.map((slug) => getEventBySlug(slug, locale)))
+    ).filter((e): e is NonNullable<typeof e> => e !== null);
+    cultureGroups[group] = found.map(toCard);
+  }
+
   // События, показанные в главных окнах выше, убираем из нижнего списка «Все рынки»,
   // чтобы не дублировались одни и те же окошки на странице.
   const hiddenInMainWindows =
@@ -111,7 +132,13 @@ export default async function CategoryPage({
               ? [...socialSlugs]
               : category === "HEALTH"
                 ? [...healthSlugs]
-                : [];
+                : category === "CULTURE"
+                  ? [
+                      ...cultureSlugs.awards,
+                      ...cultureSlugs.cinemaTv,
+                      ...cultureSlugs.celebrity,
+                    ]
+                  : [];
 
   const cards: EventCardData[] = events
     .map(toCard)
@@ -368,6 +395,63 @@ export default async function CategoryPage({
               subtitle: dict.health.subtitle,
             }}
             cards={healthCards}
+            cardLabels={cardLabels}
+          />
+
+          {/* Своё окно прогноза — точная копия с главной страницы */}
+          <div id="custom-forecast" className="scroll-mt-24">
+            <CustomForecastWindow
+              locale={locale}
+              dict={{
+                title: dict.customForecast.title,
+                subtitle: dict.customForecast.subtitle,
+                subtitle2: dict.customForecast.subtitle2,
+                queryLabel: dict.customForecast.queryLabel,
+                queryPlaceholder: dict.customForecast.queryPlaceholder,
+                queryExample: dict.customForecast.queryExample,
+                chooseDate: dict.customForecast.chooseDate,
+                dateHint: dict.customForecast.dateHint,
+                currentPrice: dict.customForecast.currentPrice,
+                autoSource: dict.customForecast.autoSource,
+                analysis: dict.customForecast.analysis,
+                loading: dict.customForecast.loading,
+                noData: dict.customForecast.noData,
+                generate: dict.customForecast.generate,
+                generating: dict.customForecast.generating,
+                nameRequired: dict.customForecast.nameRequired,
+                dateRequired: dict.customForecast.dateRequired,
+                error: dict.customForecast.error,
+                priceLabel: dict.customForecast.priceLabel,
+                note: dict.customForecast.note,
+                support: dict.customForecast.support,
+                resistance: dict.customForecast.resistance,
+                change30d: dict.customForecast.change30d,
+                rsi: dict.customForecast.rsi,
+              }}
+            />
+          </div>
+        </>
+      )}
+
+      {category === "CULTURE" && (
+        <>
+          {/* Главное окошко «Культура» с окнами внутри:
+              Кинопремии (Оскар, Грэмми, Эмми),
+              Кино и ТВ (Кассовые сборы, Финалы реалити-шоу),
+              Светская жизнь (Скандалы, Слухи о знаменитостях) */}
+          <CultureMain
+            locale={locale}
+            dict={{
+              title: dict.culture.title,
+              subtitle: dict.culture.subtitle,
+              awards: dict.culture.awards,
+              awardsSubtitle: dict.culture.awardsSubtitle,
+              cinemaTv: dict.culture.cinemaTv,
+              cinemaTvSubtitle: dict.culture.cinemaTvSubtitle,
+              celebrity: dict.culture.celebrity,
+              celebritySubtitle: dict.culture.celebritySubtitle,
+            }}
+            groups={cultureGroups}
             cardLabels={cardLabels}
           />
 

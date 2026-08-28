@@ -955,6 +955,128 @@ async function main() {
     });
   }
 
+  // ---- Культура (главное окно «Культура» на странице категории Культура) ----
+  // Окна: «Кинопремии» (Оскар, Грэмми, Эмми),
+  // «Кино и ТВ» (Кассовые сборы: рекорды фильмов в прокате, Финалы реалити-шоу),
+  // «Светская жизнь» (Скандалы, Слухи о знаменитостях).
+  const cultureEvents = [
+    {
+      slug: "oscar-awards",
+      title: "Кинопремия Оскар",
+      titleEn: "Academy Awards (Oscars)",
+      currentPrice: 45.2,
+      vol: 0.02,
+      seed: 801,
+      photoKw: "oscar,award,cinema,hollywood",
+      description:
+        "Прогноз по кинопремии «Оскар»: главные номинанты и фавориты, победители в ключевых номинациях, церемония, рейтинги трансляции и влияние на кассовые сборы фильмов. ИИ-прогноз на выбранную дату с графиком траектории и вероятностью направления.",
+      descriptionEn:
+        "Academy Awards (Oscars) forecast: top nominees and favourites, winners in key categories, the ceremony, broadcast ratings and the impact on film box office. AI forecast for the chosen date with a trajectory chart and direction probability.",
+    },
+    {
+      slug: "grammy-awards",
+      title: "Кинопремия Грэмми",
+      titleEn: "Grammy Awards",
+      currentPrice: 43.8,
+      vol: 0.021,
+      seed: 802,
+      photoKw: "grammy,music,award,concert",
+      description:
+        "Прогноз по музыкальной премии «Грэмми»: главные номинанты и фавориты, победители в ключевых номинациях, выступления и рейтинги церемонии, влияние на продажи и стриминг. ИИ-прогноз на выбранную дату с вероятностью направления.",
+      descriptionEn:
+        "Grammy Awards forecast: main nominees and favourites, winners in key categories, performances and ceremony ratings, impact on sales and streaming. AI forecast for the chosen date with direction probability.",
+    },
+    {
+      slug: "emmy-awards",
+      title: "Кинопремия Эмми",
+      titleEn: "Emmy Awards",
+      currentPrice: 42.6,
+      vol: 0.02,
+      seed: 803,
+      photoKw: "emmy,television,award,tv",
+      description:
+        "Прогноз по телевизионной премии «Эмми»: фавориты среди сериалов и шоу, победители в ключевых номинациях, стриминговые платформы и рейтинги церемонии. ИИ-прогноз на выбранную дату с графиком траектории и вероятностью направления.",
+      descriptionEn:
+        "Emmy Awards forecast: favourites among series and shows, winners in key categories, streaming platforms and ceremony ratings. AI forecast for the chosen date with a trajectory chart and direction probability.",
+    },
+    {
+      slug: "box-office-records",
+      title: "Кассовые сборы: рекорды фильмов в прокате",
+      titleEn: "Box Office: Film Release Records",
+      currentPrice: 55.7,
+      vol: 0.018,
+      seed: 804,
+      photoKw: "cinema,box,office,movie,theater",
+      description:
+        "Прогноз по кассовым сборам: рекорды фильмов в мировом прокате, стартовые уикенды, миллиардные рубежи, влияние релизов на киноиндустрию и стриминг. ИИ-прогноз на выбранную дату с графиком траектории и вероятностью направления.",
+      descriptionEn:
+        "Box office forecast: film release records worldwide, opening weekends, billion-dollar milestones, the impact of releases on the film industry and streaming. AI forecast for the chosen date with a trajectory chart and direction probability.",
+    },
+    {
+      slug: "reality-show-finals",
+      title: "Финалы реалити-шоу",
+      titleEn: "Reality Show Finals",
+      currentPrice: 38.4,
+      vol: 0.025,
+      seed: 805,
+      photoKw: "reality,show,tv,finale",
+      description:
+        "Прогноз по финалам реалити-шоу: победители сезонов, финальные голосования, рейтинги выпусков, интриги и скандалы вокруг участников. ИИ-прогноз на выбранную дату с вероятностью направления и ключевыми сценариями.",
+      descriptionEn:
+        "Reality show finals forecast: season winners, final votes, episode ratings, drama and scandals around contestants. AI forecast for the chosen date with direction probability and key scenarios.",
+    },
+    {
+      slug: "scandals",
+      title: "Скандалы",
+      titleEn: "Scandals",
+      currentPrice: 33.1,
+      vol: 0.03,
+      seed: 806,
+      photoKw: "scandal,media,news,spotlight",
+      description:
+        "Прогноз по громким скандалам в мире шоу-бизнеса и культуры: разоблачения, судебные разбирательства, отмены проектов, влияние на карьеры знаменитостей и рынки развлечений. ИИ-прогноз на выбранную дату с графиком траектории и вероятностью направления.",
+      descriptionEn:
+        "Forecast on high-profile scandals in show business and culture: exposés, lawsuits, project cancellations, the impact on celebrity careers and the entertainment industry. AI forecast for the chosen date with a trajectory chart and direction probability.",
+    },
+    {
+      slug: "celebrity-rumors",
+      title: "Слухи о знаменитостях",
+      titleEn: "Celebrity Rumors",
+      currentPrice: 30.5,
+      vol: 0.028,
+      seed: 807,
+      photoKw: "celebrity,star,glamour,redcarpet",
+      description:
+        "Прогноз по слухам о знаменитостях: громкие новости, подтверждённые и опровергнутые истории, влияние слухов на репутацию, соцсети и бренды. ИИ-прогноз на выбранную дату с вероятностью направления и ключевыми сценариями.",
+      descriptionEn:
+        "Forecast on celebrity rumors: breaking news, confirmed and debunked stories, the impact of rumors on reputation, social media and brands. AI forecast for the chosen date with direction probability and key scenarios.",
+    },
+  ];
+
+  for (const c of cultureEvents) {
+    const chartData = historyWalk(c.currentPrice, 40, c.vol, c.seed);
+    await prisma.event.upsert({
+      where: { slug: c.slug },
+      update: {
+        currentPrice: c.currentPrice,
+        chartData,
+      },
+      create: {
+        slug: c.slug,
+        title: c.title,
+        titleEn: c.titleEn,
+        description: c.description,
+        descriptionEn: c.descriptionEn,
+        category: EventCategory.CULTURE,
+        price: 10,
+        currency: "EUR",
+        currentPrice: c.currentPrice,
+        chartData,
+        imageUrl: `https://loremflickr.com/640/360/${encodeURIComponent(c.photoKw)}`,
+      },
+    });
+  }
+
   // ---- Demo forecasts for the demo user (leaderboard / dashboard demo) ----
   const gold = await prisma.event.findUniqueOrThrow({ where: { slug: "gold" } });
   const btc = await prisma.event.findUniqueOrThrow({ where: { slug: "bitcoin" } });
