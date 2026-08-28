@@ -1,5 +1,28 @@
-export const CATEGORIES = ["GOLD", "OIL", "CURRENCY", "CRYPTO", "RATES", "OTHER"] as const;
+export const CATEGORIES = [
+  "GOLD",
+  "OIL",
+  "CURRENCY",
+  "CRYPTO",
+  "RATES",
+  "OTHER",
+  "ECONOMICS",
+  "POLITICS",
+  "SPORTS",
+  "CLIMATE",
+  "SOCIETY",
+  "HEALTH",
+] as const;
 export type CategoryId = (typeof CATEGORIES)[number];
+
+// Категории, показываемые отдельным пунктом в боковом меню.
+export const SIDEBAR_CATEGORIES: CategoryId[] = [
+  "ECONOMICS",
+  "POLITICS",
+  "SPORTS",
+  "CLIMATE",
+  "SOCIETY",
+  "HEALTH",
+];
 
 const categoryColors: Record<CategoryId, { c1: string; c2: string; icon: string }> = {
   GOLD: { c1: "#F59E0B", c2: "#B45309", icon: "Au" },
@@ -8,6 +31,12 @@ const categoryColors: Record<CategoryId, { c1: string; c2: string; icon: string 
   CRYPTO: { c1: "#F59E0B", c2: "#7C2D12", icon: "₿" },
   RATES: { c1: "#0EA5E9", c2: "#1E40AF", icon: "%" },
   OTHER: { c1: "#10B981", c2: "#1E40AF", icon: "?" },
+  ECONOMICS: { c1: "#FBBF24", c2: "#92400E", icon: "Eco" },
+  POLITICS: { c1: "#6366F1", c2: "#312E81", icon: "Pol" },
+  SPORTS: { c1: "#22C55E", c2: "#14532D", icon: "Spr" },
+  CLIMATE: { c1: "#0EA5E9", c2: "#0C4A6E", icon: "Clm" },
+  SOCIETY: { c1: "#EC4899", c2: "#831843", icon: "Soc" },
+  HEALTH: { c1: "#A855F7", c2: "#581C87", icon: "Hl" },
 };
 
 export function categoryImage(category: string, label?: string): string {
@@ -24,6 +53,12 @@ const photoKeywords: Record<CategoryId, string> = {
   CRYPTO: "bitcoin,crypto",
   RATES: "interest,chart",
   OTHER: "stock,market",
+  ECONOMICS: "economy,finance,gdp",
+  POLITICS: "politics,government",
+  SPORTS: "sports,stadium,football",
+  CLIMATE: "climate,nature,weather",
+  SOCIETY: "society,people,community",
+  HEALTH: "health,science,medicine",
 };
 
 /** Реальное фото по категории (бесплатный LoremFlickr по ключевым словам). */
@@ -57,10 +92,46 @@ const keywordMap: Record<CategoryId, string[]> = {
   ],
   OIL: ["oil", "нефть", "brent", "wti", "бензин", "газойль"],
   RATES: ["rate", "ставка", "fed", "фрс", "ecb", "ецб", "fomc", "ипотека", "процент"],
+  ECONOMICS: [
+    "экономик", "экономика", "ввп", "gdp", "инфляци", "безработиц", "валюта курс",
+    "санкци", "econ", "economy", "inflation", "recession", "gdp",
+  ],
+  POLITICS: [
+    "политик", "выбор", "президент", "полит", "government", "election", "parliament",
+    "санкции", "санкци", "лидер", "голосован",
+  ],
+  SPORTS: [
+    "спорт", "футбол", "football", "soccer", "чемпионат", "олимпиад", "теннис",
+    "хоккей", "hockey", "баскетбол", "basketball", "world cup", "ст", "league",
+  ],
+  CLIMATE: [
+    "климат", "эколог", "погод", "наводнен", "засух", "температур", "экологи",
+    "climate", "environment", "weather", "warming", "парник",
+  ],
+  SOCIETY: [
+    "социальн", "общество", "тренд", "демографи", "миграци", "мода", "население",
+    "society", "social", "trend", "demographic", "милли", "людей",
+  ],
+  HEALTH: [
+    "здоров", "медицин", "наук", "вакцин", "science", "medicine", "health",
+    "healthcare", "исследован", "открыти", "лекарств",
+  ],
   OTHER: [],
 };
 
-const detectOrder: CategoryId[] = ["CRYPTO", "CURRENCY", "GOLD", "OIL", "RATES"];
+const detectOrder: CategoryId[] = [
+  "CRYPTO",
+  "CURRENCY",
+  "GOLD",
+  "OIL",
+  "RATES",
+  "ECONOMICS",
+  "POLITICS",
+  "SPORTS",
+  "CLIMATE",
+  "SOCIETY",
+  "HEALTH",
+];
 
 export function detectCategory(title: string): CategoryId | null {
   const t = title.toLowerCase().trim();

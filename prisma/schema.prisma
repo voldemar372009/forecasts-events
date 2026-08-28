@@ -26,6 +26,12 @@ enum EventCategory {
   CRYPTO
   RATES
   OTHER
+  ECONOMICS
+  POLITICS
+  SPORTS
+  CLIMATE
+  SOCIETY
+  HEALTH
 }
 
 enum ForecastStatus {

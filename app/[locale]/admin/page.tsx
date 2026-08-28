@@ -2,11 +2,10 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { getSessionUser } from "@/lib/auth";
 import { getDict, isLocale, defaultLocale } from "@/lib/i18n";
+import { CATEGORIES } from "@/lib/categories";
 import AdminPanel, { type AdminEvent, type AdminPayment } from "@/components/AdminPanel";
 
 export const dynamic = "force-dynamic";
-
-const CATEGORIES = ["GOLD", "OIL", "CURRENCY", "CRYPTO", "RATES", "OTHER"];
 
 export default async function AdminPage({ params }: { params: { locale: string } }) {
   const locale = isLocale(params.locale) ? params.locale : defaultLocale;
@@ -60,7 +59,7 @@ export default async function AdminPage({ params }: { params: { locale: string }
   return (
     <div className="fade-in">
       <AdminPanel
-        categories={CATEGORIES}
+        categories={CATEGORIES.map((c) => ({ value: c, label: dict.category[c] ?? c }))}
         initialEvents={events}
         initialPayments={payments}
         dict={dict.admin}

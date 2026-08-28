@@ -17,6 +17,12 @@ type SidebarDict = {
   live: string;
 };
 
+export type CategoryNavItem = {
+  id: string;
+  label: string;
+  icon: string;
+};
+
 export function LogoMark({ size = 40 }: { size?: number }) {
   return (
     <div
@@ -51,17 +57,24 @@ export default function Sidebar({
   locale,
   dict,
   user,
+  categoryNav,
 }: {
   locale: string;
   dict: SidebarDict;
   user: { name: string; role: string } | null;
+  categoryNav: CategoryNavItem[];
 }) {
   const pathname = usePathname();
   const base = `/${locale}`;
 
   const items: { href: string; label: string; icon: string; markets?: boolean }[] = [
     { href: base, label: dict.markets, icon: "📊", markets: true },
-    { href: `${base}/new-forecast`, label: dict.newForecast, icon: "➕" },
+    ...categoryNav.map((c) => ({
+      href: `${base}/category/${c.id}`,
+      label: c.label,
+      icon: c.icon,
+    })),
+    { href: `${base}#custom-forecast`, label: dict.newForecast, icon: "➕" },
     { href: `${base}/dashboard`, label: dict.dashboard, icon: "👤" },
     { href: `${base}/leaderboard`, label: dict.analytics, icon: "🏆" },
   ];

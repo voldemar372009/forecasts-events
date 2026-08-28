@@ -1,9 +1,19 @@
 import Link from "next/link";
 import { getDict, isLocale, defaultLocale } from "@/lib/i18n";
 import { getSessionUser } from "@/lib/auth";
-import Sidebar, { LogoMark } from "@/components/Sidebar";
+import { SIDEBAR_CATEGORIES } from "@/lib/categories";
+import Sidebar, { type CategoryNavItem, LogoMark } from "@/components/Sidebar";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import LogoutButton from "@/components/LogoutButton";
+
+const CATEGORY_ICONS: Record<string, string> = {
+  ECONOMICS: "📈",
+  POLITICS: "🏛️",
+  SPORTS: "⚽",
+  CLIMATE: "🌍",
+  SOCIETY: "👥",
+  HEALTH: "🧬",
+};
 
 export default async function LocaleLayout({
   children,
@@ -15,6 +25,12 @@ export default async function LocaleLayout({
   const locale = isLocale(params.locale) ? params.locale : defaultLocale;
   const dict = getDict(locale);
   const user = await getSessionUser();
+
+  const categoryNav: CategoryNavItem[] = SIDEBAR_CATEGORIES.map((c) => ({
+    id: c,
+    label: dict.category[c],
+    icon: CATEGORY_ICONS[c] ?? "",
+  }));
 
   return (
     <div className="flex min-h-screen flex-col bg-grid bg-[length:28px_28px]">
@@ -33,6 +49,7 @@ export default async function LocaleLayout({
           logout: dict.nav.logout,
           live: dict.events.live,
         }}
+        categoryNav={categoryNav}
       />
 
       {/* Верхняя панель (мобильные) */}
@@ -56,7 +73,11 @@ export default async function LocaleLayout({
       <nav className="sticky top-[61px] z-10 flex gap-2 overflow-x-auto border-b border-night-line bg-[#0A0C10]/90 px-4 py-2 backdrop-blur lg:hidden">
         {[
           { href: `/${locale}`, label: dict.nav.markets },
-          { href: `/${locale}/new-forecast`, label: dict.nav.newForecast },
+          ...categoryNav.map((c) => ({
+            href: `/${locale}/category/${c.id}`,
+            label: `${c.icon} ${c.label}`,
+          })),
+          { href: `/${locale}#custom-forecast`, label: dict.nav.newForecast },
           { href: `/${locale}/dashboard`, label: dict.nav.dashboard },
           { href: `/${locale}/leaderboard`, label: dict.nav.analytics },
           ...(user?.role === "ADMIN" ? [{ href: `/${locale}/admin`, label: dict.nav.admin }] : []),

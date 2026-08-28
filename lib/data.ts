@@ -71,6 +71,18 @@ export async function getEvents(locale: Locale): Promise<EventView[]> {
   return events.map((e) => toView(e, locale));
 }
 
+export async function getEventsByCategory(
+  category: string,
+  locale: Locale
+): Promise<EventView[]> {
+  await autoCloseEvents();
+  const events = await prisma.event.findMany({
+    where: { status: "ACTIVE", isCustom: false, category: category as never },
+    orderBy: { createdAt: "asc" },
+  });
+  return events.map((e) => toView(e, locale));
+}
+
 export async function getEventBySlug(slug: string, locale: Locale): Promise<EventView | null> {
   await autoCloseEvents();
   const e = await prisma.event.findUnique({ where: { slug } });

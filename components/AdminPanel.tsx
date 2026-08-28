@@ -83,7 +83,7 @@ export default function AdminPanel({
   initialPayments,
   dict,
 }: {
-  categories: string[];
+  categories: { value: string; label: string }[];
   initialEvents: AdminEvent[];
   initialPayments: AdminPayment[];
   dict: AdminDict;
@@ -245,8 +245,8 @@ export default function AdminPanel({
               <label className="label-form">{dict.fields.category}</label>
               <select className="input-neon" value={form.category} onChange={(e) => f("category")(e.target.value)}>
                 {categories.map((c) => (
-                  <option key={c} value={c}>
-                    {c}
+                  <option key={c.value} value={c.value}>
+                    {c.label}
                   </option>
                 ))}
               </select>

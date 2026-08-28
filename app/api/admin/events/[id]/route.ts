@@ -2,8 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getSessionUser } from "@/lib/auth";
 import { slugify } from "@/lib/slugify";
-
-const CATEGORIES = ["GOLD", "OIL", "CURRENCY", "CRYPTO", "RATES", "OTHER"];
+import { CATEGORIES } from "@/lib/categories";
 
 export async function GET(
   _req: Request,
@@ -48,7 +47,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
   const price = Number(body?.price);
   const currentPrice = body?.currentPrice !== null && body?.currentPrice !== undefined && body?.currentPrice !== "" ? Number(body.currentPrice) : null;
 
-  if (!title || !description || !CATEGORIES.includes(category) || !(price > 0)) {
+  if (!title || !description || !(CATEGORIES as readonly string[]).includes(category) || !(price > 0)) {
     return NextResponse.json({ error: "invalidData" }, { status: 400 });
   }
 
