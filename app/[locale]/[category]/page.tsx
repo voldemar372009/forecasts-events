@@ -300,6 +300,43 @@ export default async function CategoryPage({
           />
         </section>
       )}
+
+      {category === "CLIMATE" && (
+        <section>
+          {/* Своё окно прогноза — точная копия с главной страницы */}
+          <div id="custom-forecast" className="scroll-mt-24 mt-10">
+            <CustomForecastWindow
+              locale={locale}
+              dict={{
+                title: dict.customForecast.title,
+                subtitle: dict.customForecast.subtitle,
+                subtitle2: dict.customForecast.subtitle2,
+                queryLabel: dict.customForecast.queryLabel,
+                queryPlaceholder: dict.customForecast.queryPlaceholder,
+                queryExample: dict.customForecast.queryExample,
+                chooseDate: dict.customForecast.chooseDate,
+                dateHint: dict.customForecast.dateHint,
+                currentPrice: dict.customForecast.currentPrice,
+                autoSource: dict.customForecast.autoSource,
+                analysis: dict.customForecast.analysis,
+                loading: dict.customForecast.loading,
+                noData: dict.customForecast.noData,
+                generate: dict.customForecast.generate,
+                generating: dict.customForecast.generating,
+                nameRequired: dict.customForecast.nameRequired,
+                dateRequired: dict.customForecast.dateRequired,
+                error: dict.customForecast.error,
+                priceLabel: dict.customForecast.priceLabel,
+                note: dict.customForecast.note,
+                support: dict.customForecast.support,
+                resistance: dict.customForecast.resistance,
+                change30d: dict.customForecast.change30d,
+                rsi: dict.customForecast.rsi,
+              }}
+            />
+          </div>
+        </section>
+      )}
     </div>
   );
 }
