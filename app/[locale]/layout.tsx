@@ -74,7 +74,7 @@ export default async function LocaleLayout({
         {[
           { href: `/${locale}`, label: dict.nav.markets },
           ...categoryNav.map((c) => ({
-            href: `/${locale}/category/${c.id}`,
+            href: `/${locale}/${c.id.toLowerCase()}`,
             label: `${c.icon} ${c.label}`,
           })),
           { href: `/${locale}#custom-forecast`, label: dict.nav.newForecast },

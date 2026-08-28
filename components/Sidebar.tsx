@@ -70,7 +70,7 @@ export default function Sidebar({
   const items: { href: string; label: string; icon: string; markets?: boolean }[] = [
     { href: base, label: dict.markets, icon: "📊", markets: true },
     ...categoryNav.map((c) => ({
-      href: `${base}/category/${c.id}`,
+      href: `${base}/${c.id.toLowerCase()}`,
       label: c.label,
       icon: c.icon,
     })),
