@@ -38,8 +38,6 @@ export default async function CategoryPage({
     closed: e.status !== "ACTIVE",
   });
 
-  const cards: EventCardData[] = events.map(toCard);
-
   // Три окошка «Динамики фондовых индексов» — акции, мировые и российские биржи.
   const indexSlugs = ["stock-dynamics", "world-exchanges", "russian-exchanges"];
   const indexEvents = (
@@ -75,6 +73,26 @@ export default async function CategoryPage({
     ).filter((e): e is NonNullable<typeof e> => e !== null);
     sportsGroups[group] = found.map(toCard);
   }
+
+  // События, показанные в главных окнах выше, убираем из нижнего списка «Все рынки»,
+  // чтобы не дублировались одни и те же окошки на странице.
+  const hiddenInMainWindows =
+    category === "ECONOMICS"
+      ? [...indexSlugs]
+      : category === "POLITICS"
+        ? [...politicsSlugs]
+        : category === "SPORTS"
+          ? [
+              ...sportsSlugs.top,
+              ...sportsSlugs.leagues,
+              ...sportsSlugs.esports,
+              ...sportsSlugs.achievements,
+            ]
+          : [];
+
+  const cards: EventCardData[] = events
+    .map(toCard)
+    .filter((e) => !hiddenInMainWindows.includes(e.slug));
 
   const cardLabels = {
     from: dict.events.from,
@@ -266,20 +284,22 @@ export default async function CategoryPage({
         </>
       )}
 
-      <section>
-        <MarketsGrid
-          locale={locale}
-          events={cards}
-          categoryLabels={dict.category}
-          cardLabels={cardLabels}
-          dict={{
-            search: dict.events.search,
-            filters: dict.events.filters,
-            all: dict.events.all,
-            live: dict.events.live,
-          }}
-        />
-      </section>
+      {category !== "POLITICS" && (
+        <section>
+          <MarketsGrid
+            locale={locale}
+            events={cards}
+            categoryLabels={dict.category}
+            cardLabels={cardLabels}
+            dict={{
+              search: dict.events.search,
+              filters: dict.events.filters,
+              all: dict.events.all,
+              live: dict.events.live,
+            }}
+          />
+        </section>
+      )}
     </div>
   );
 }
