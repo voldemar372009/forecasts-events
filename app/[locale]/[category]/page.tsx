@@ -8,6 +8,7 @@ import StockIndexDynamics from "@/components/StockIndexDynamics";
 import PoliticsGeopolitics from "@/components/PoliticsGeopolitics";
 import SportsMain from "@/components/SportsMain";
 import SocialTrendsMain from "@/components/SocialTrendsMain";
+import HealthScienceMain from "@/components/HealthScienceMain";
 import CustomForecastWindow from "@/components/CustomForecastWindow";
 import type { EventCardData } from "@/components/EventCard";
 
@@ -83,6 +84,15 @@ export default async function CategoryPage({
 
   const socialCards: EventCardData[] = socialEvents.map(toCard);
 
+  // Два окошка «Здоровье и наука» — вспышки заболеваний и распространение вирусов,
+  // одобрение новых лекарств и вакцин.
+  const healthSlugs = ["disease-outbreaks", "drug-vaccine-approval"];
+  const healthEvents = (
+    await Promise.all(healthSlugs.map((slug) => getEventBySlug(slug, locale)))
+  ).filter((e): e is NonNullable<typeof e> => e !== null);
+
+  const healthCards: EventCardData[] = healthEvents.map(toCard);
+
   // События, показанные в главных окнах выше, убираем из нижнего списка «Все рынки»,
   // чтобы не дублировались одни и те же окошки на странице.
   const hiddenInMainWindows =
@@ -99,7 +109,9 @@ export default async function CategoryPage({
               ]
             : category === "SOCIETY"
               ? [...socialSlugs]
-              : [];
+              : category === "HEALTH"
+                ? [...healthSlugs]
+                : [];
 
   const cards: EventCardData[] = events
     .map(toCard)
@@ -306,6 +318,56 @@ export default async function CategoryPage({
               subtitle: dict.society.subtitle,
             }}
             cards={socialCards}
+            cardLabels={cardLabels}
+          />
+
+          {/* Своё окно прогноза — точная копия с главной страницы */}
+          <div id="custom-forecast" className="scroll-mt-24">
+            <CustomForecastWindow
+              locale={locale}
+              dict={{
+                title: dict.customForecast.title,
+                subtitle: dict.customForecast.subtitle,
+                subtitle2: dict.customForecast.subtitle2,
+                queryLabel: dict.customForecast.queryLabel,
+                queryPlaceholder: dict.customForecast.queryPlaceholder,
+                queryExample: dict.customForecast.queryExample,
+                chooseDate: dict.customForecast.chooseDate,
+                dateHint: dict.customForecast.dateHint,
+                currentPrice: dict.customForecast.currentPrice,
+                autoSource: dict.customForecast.autoSource,
+                analysis: dict.customForecast.analysis,
+                loading: dict.customForecast.loading,
+                noData: dict.customForecast.noData,
+                generate: dict.customForecast.generate,
+                generating: dict.customForecast.generating,
+                nameRequired: dict.customForecast.nameRequired,
+                dateRequired: dict.customForecast.dateRequired,
+                error: dict.customForecast.error,
+                priceLabel: dict.customForecast.priceLabel,
+                note: dict.customForecast.note,
+                support: dict.customForecast.support,
+                resistance: dict.customForecast.resistance,
+                change30d: dict.customForecast.change30d,
+                rsi: dict.customForecast.rsi,
+              }}
+            />
+          </div>
+        </>
+      )}
+
+      {category === "HEALTH" && (
+        <>
+          {/* Главное окошко «Здоровье и наука» с окошками внутри:
+              Вспышки заболеваний, распространение вирусов;
+              Одобрение новых лекарств, вакцин */}
+          <HealthScienceMain
+            locale={locale}
+            dict={{
+              title: dict.health.title,
+              subtitle: dict.health.subtitle,
+            }}
+            cards={healthCards}
             cardLabels={cardLabels}
           />
 

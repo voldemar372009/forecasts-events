@@ -898,6 +898,63 @@ async function main() {
     });
   }
 
+  // ---- Здоровье и наука (главное окно «Здоровье и наука»
+  // на странице категории Здоровье и наука) ----
+  // Окна: «Вспышки заболеваний, распространение вирусов»,
+  // «Одобрение новых лекарств, вакцин».
+  const healthEvents = [
+    {
+      slug: "disease-outbreaks",
+      title: "Вспышки заболеваний, распространение вирусов",
+      titleEn: "Disease Outbreaks, Virus Spread",
+      currentPrice: 15.2,
+      vol: 0.025,
+      seed: 701,
+      photoKw: "virus,outbreak,disease,epidemiology",
+      description:
+        "Прогноз по вспышкам заболеваний и распространению вирусов: эпидемиологические риски, распространение инфекций по регионам, меры здравоохранения и влияние на экономику и рынки. ИИ-прогноз на выбранную дату с графиком траектории и вероятностью направления.",
+      descriptionEn:
+        "Forecast on disease outbreaks and virus spread: epidemiological risks, spread of infections across regions, public health measures and the impact on the economy and markets. AI forecast for the chosen date with a trajectory chart and direction probability.",
+    },
+    {
+      slug: "drug-vaccine-approval",
+      title: "Одобрение новых лекарств, вакцин",
+      titleEn: "Approval of New Drugs, Vaccines",
+      currentPrice: 21.4,
+      vol: 0.02,
+      seed: 702,
+      photoKw: "vaccine,medicine,laboratory,science",
+      description:
+        "Прогноз по одобрению новых лекарств и вакцин: регуляторные решения, клинические испытания, выход препаратов на рынок и влияние на фармотрасль и биотехнологии. ИИ-прогноз на выбранную дату с графиком траектории и вероятностью направления.",
+      descriptionEn:
+        "Forecast on the approval of new drugs and vaccines: regulatory decisions, clinical trials, market launches and the impact on the pharmaceutical and biotech industries. AI forecast for the chosen date with a trajectory chart and direction probability.",
+    },
+  ];
+
+  for (const h of healthEvents) {
+    const chartData = historyWalk(h.currentPrice, 40, h.vol, h.seed);
+    await prisma.event.upsert({
+      where: { slug: h.slug },
+      update: {
+        currentPrice: h.currentPrice,
+        chartData,
+      },
+      create: {
+        slug: h.slug,
+        title: h.title,
+        titleEn: h.titleEn,
+        description: h.description,
+        descriptionEn: h.descriptionEn,
+        category: EventCategory.HEALTH,
+        price: 10,
+        currency: "EUR",
+        currentPrice: h.currentPrice,
+        chartData,
+        imageUrl: `https://loremflickr.com/640/360/${encodeURIComponent(h.photoKw)}`,
+      },
+    });
+  }
+
   // ---- Demo forecasts for the demo user (leaderboard / dashboard demo) ----
   const gold = await prisma.event.findUniqueOrThrow({ where: { slug: "gold" } });
   const btc = await prisma.event.findUniqueOrThrow({ where: { slug: "bitcoin" } });

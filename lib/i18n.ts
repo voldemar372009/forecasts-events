@@ -112,6 +112,10 @@ const ru = {
     title: "Социальные тренды и общество",
     subtitle: "Прогнозы по демографическим трендам: рождаемость, миграция и ключевые социальные изменения в мире",
   },
+  health: {
+    title: "Здоровье и наука",
+    subtitle: "Прогнозы по вспышкам заболеваний, распространению вирусов, одобрению новых лекарств и вакцин, медицинским и научным открытиям",
+  },
   eventPage: {
     back: "← Все события",
     description: "Описание",
@@ -379,6 +383,10 @@ const en: Dict = {
     title: "Social Trends & Society",
     subtitle: "Forecasts on demographic trends: birth rates, migration and key social changes around the world",
   },
+  health: {
+    title: "Health & Science",
+    subtitle: "Forecasts on disease outbreaks, virus spread, approval of new drugs and vaccines, medical and scientific discoveries",
+  },
   eventPage: {
     back: "← All events",
     description: "Description",
@@ -643,6 +651,10 @@ const es: Dict = {
   society: {
     title: "Tendencias sociales y sociedad",
     subtitle: "Pronósticos sobre tendencias demográficas: natalidad, migración y cambios sociales clave en el mundo",
+  },
+  health: {
+    title: "Salud y ciencia",
+    subtitle: "Pronósticos sobre brotes de enfermedades, propagación de virus, aprobación de nuevos medicamentos y vacunas, descubrimientos médicos y científicos",
   },
   eventPage: {
     back: "← Todos los eventos",
@@ -909,6 +921,10 @@ const it: Dict = {
     title: "Tendenze sociali e società",
     subtitle: "Previsioni sulle tendenze demografiche: natalità, migrazioni e principali cambiamenti sociali nel mondo",
   },
+  health: {
+    title: "Salute e scienza",
+    subtitle: "Previsioni su focolai di malattie, diffusione di virus, approvazione di nuovi farmaci e vaccini, scoperte mediche e scientifiche",
+  },
   eventPage: {
     back: "← Tutti gli eventi",
     description: "Descrizione",
@@ -1174,6 +1190,10 @@ const fr: Dict = {
     title: "Tendances sociales et société",
     subtitle: "Prévisions sur les tendances démographiques : natalité, migrations et grands changements sociaux dans le monde",
   },
+  health: {
+    title: "Santé et science",
+    subtitle: "Prévisions sur les épidémies, la propagation des virus, l'approbation de nouveaux médicaments et vaccins, les découvertes médicales et scientifiques",
+  },
   eventPage: {
     back: "← Tous les événements",
     description: "Description",
@@ -1438,6 +1458,10 @@ const de: Dict = {
   society: {
     title: "Soziale Trends und Gesellschaft",
     subtitle: "Prognosen zu demografischen Trends: Geburtenraten, Migration und wichtige soziale Veränderungen weltweit",
+  },
+  health: {
+    title: "Gesundheit und Wissenschaft",
+    subtitle: "Prognosen zu Krankheitsausbrüchen, Virusausbreitung, Zulassung neuer Medikamente und Impfstoffe, medizinischen und wissenschaftlichen Entdeckungen",
   },
   eventPage: {
     back: "← Alle Ereignisse",
