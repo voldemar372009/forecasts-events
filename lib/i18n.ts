@@ -108,6 +108,10 @@ const ru = {
     achievements: "Индивидуальные достижения",
     achievementsSubtitle: "Рекорды, переходы игроков, награды MVP",
   },
+  society: {
+    title: "Социальные тренды и общество",
+    subtitle: "Прогнозы по демографическим трендам: рождаемость, миграция и ключевые социальные изменения в мире",
+  },
   eventPage: {
     back: "← Все события",
     description: "Описание",
@@ -371,6 +375,10 @@ const en: Dict = {
     achievements: "Individual Achievements",
     achievementsSubtitle: "Records, player transfers, MVP awards",
   },
+  society: {
+    title: "Social Trends & Society",
+    subtitle: "Forecasts on demographic trends: birth rates, migration and key social changes around the world",
+  },
   eventPage: {
     back: "← All events",
     description: "Description",
@@ -631,6 +639,10 @@ const es: Dict = {
     esportsSubtitle: "Dota 2, League of Legends, CS2",
     achievements: "Logros individuales",
     achievementsSubtitle: "Récords, traspasos de jugadores, premios MVP",
+  },
+  society: {
+    title: "Tendencias sociales y sociedad",
+    subtitle: "Pronósticos sobre tendencias demográficas: natalidad, migración y cambios sociales clave en el mundo",
   },
   eventPage: {
     back: "← Todos los eventos",
@@ -893,6 +905,10 @@ const it: Dict = {
     achievements: "Risultati individuali",
     achievementsSubtitle: "Record, trasferimenti di giocatori, premi MVP",
   },
+  society: {
+    title: "Tendenze sociali e società",
+    subtitle: "Previsioni sulle tendenze demografiche: natalità, migrazioni e principali cambiamenti sociali nel mondo",
+  },
   eventPage: {
     back: "← Tutti gli eventi",
     description: "Descrizione",
@@ -1154,6 +1170,10 @@ const fr: Dict = {
     achievements: "Exploits individuels",
     achievementsSubtitle: "Records, transferts de joueurs, prix MVP",
   },
+  society: {
+    title: "Tendances sociales et société",
+    subtitle: "Prévisions sur les tendances démographiques : natalité, migrations et grands changements sociaux dans le monde",
+  },
   eventPage: {
     back: "← Tous les événements",
     description: "Description",
@@ -1414,6 +1434,10 @@ const de: Dict = {
     esportsSubtitle: "Dota 2, League of Legends, CS2",
     achievements: "Individuelle Leistungen",
     achievementsSubtitle: "Rekorde, Spielertransfers, MVP-Auszeichnungen",
+  },
+  society: {
+    title: "Soziale Trends und Gesellschaft",
+    subtitle: "Prognosen zu demografischen Trends: Geburtenraten, Migration und wichtige soziale Veränderungen weltweit",
   },
   eventPage: {
     back: "← Alle Ereignisse",

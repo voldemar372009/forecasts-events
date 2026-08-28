@@ -842,6 +842,62 @@ async function main() {
     });
   }
 
+  // ---- Социальные тренды и общество (главное окно «Социальные тренды и общество»
+  // на странице категории Общество) ----
+  // Окна: «Демография: тренды рождаемости», «Демография: тренды миграции».
+  const socialTrends = [
+    {
+      slug: "birth-trends",
+      title: "Демография: тренды рождаемости",
+      titleEn: "Demography: Birth Trends",
+      currentPrice: 12.4,
+      vol: 0.02,
+      seed: 601,
+      photoKw: "demography,population,birth,families",
+      description:
+        "Прогноз по мировым трендам рождаемости: коэффициент рождаемости по регионам, изменение числа новорождённых, демографическая политика государств и влияние на экономику и рынки. ИИ-прогноз на выбранную дату с графиком траектории и вероятностью направления.",
+      descriptionEn:
+        "Global birth rate trends forecast: regional fertility rates, changes in the number of newborns, government demographic policies and the impact on the economy and markets. AI forecast for the chosen date with a trajectory chart and direction probability.",
+    },
+    {
+      slug: "migration-trends",
+      title: "Демография: тренды миграции",
+      titleEn: "Demography: Migration Trends",
+      currentPrice: 18.6,
+      vol: 0.022,
+      seed: 602,
+      photoKw: "migration,people,population,travel",
+      description:
+        "Прогноз по мировым трендам миграции: потоки трудовых мигрантов, движение беженцев, миграционная политика стран и влияние на демографию, рынок труда и экономику. ИИ-прогноз на выбранную дату с графиком траектории и вероятностью направления.",
+      descriptionEn:
+        "Global migration trends forecast: labor migration flows, refugee movements, national migration policies and their impact on demographics, the labor market and the economy. AI forecast for the chosen date with a trajectory chart and direction probability.",
+    },
+  ];
+
+  for (const s of socialTrends) {
+    const chartData = historyWalk(s.currentPrice, 40, s.vol, s.seed);
+    await prisma.event.upsert({
+      where: { slug: s.slug },
+      update: {
+        currentPrice: s.currentPrice,
+        chartData,
+      },
+      create: {
+        slug: s.slug,
+        title: s.title,
+        titleEn: s.titleEn,
+        description: s.description,
+        descriptionEn: s.descriptionEn,
+        category: EventCategory.SOCIETY,
+        price: 10,
+        currency: "EUR",
+        currentPrice: s.currentPrice,
+        chartData,
+        imageUrl: `https://loremflickr.com/640/360/${encodeURIComponent(s.photoKw)}`,
+      },
+    });
+  }
+
   // ---- Demo forecasts for the demo user (leaderboard / dashboard demo) ----
   const gold = await prisma.event.findUniqueOrThrow({ where: { slug: "gold" } });
   const btc = await prisma.event.findUniqueOrThrow({ where: { slug: "bitcoin" } });

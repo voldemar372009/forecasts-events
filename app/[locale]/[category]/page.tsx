@@ -7,6 +7,7 @@ import CurrencyRates from "@/components/CurrencyRates";
 import StockIndexDynamics from "@/components/StockIndexDynamics";
 import PoliticsGeopolitics from "@/components/PoliticsGeopolitics";
 import SportsMain from "@/components/SportsMain";
+import SocialTrendsMain from "@/components/SocialTrendsMain";
 import CustomForecastWindow from "@/components/CustomForecastWindow";
 import type { EventCardData } from "@/components/EventCard";
 
@@ -74,6 +75,14 @@ export default async function CategoryPage({
     sportsGroups[group] = found.map(toCard);
   }
 
+  // Два окошка «Социальные тренды и общество» — демография: рождаемость и миграция.
+  const socialSlugs = ["birth-trends", "migration-trends"];
+  const socialEvents = (
+    await Promise.all(socialSlugs.map((slug) => getEventBySlug(slug, locale)))
+  ).filter((e): e is NonNullable<typeof e> => e !== null);
+
+  const socialCards: EventCardData[] = socialEvents.map(toCard);
+
   // События, показанные в главных окнах выше, убираем из нижнего списка «Все рынки»,
   // чтобы не дублировались одни и те же окошки на странице.
   const hiddenInMainWindows =
@@ -81,14 +90,16 @@ export default async function CategoryPage({
       ? [...indexSlugs]
       : category === "POLITICS"
         ? [...politicsSlugs]
-        : category === "SPORTS"
-          ? [
-              ...sportsSlugs.top,
-              ...sportsSlugs.leagues,
-              ...sportsSlugs.esports,
-              ...sportsSlugs.achievements,
-            ]
-          : [];
+: category === "SPORTS"
+            ? [
+                ...sportsSlugs.top,
+                ...sportsSlugs.leagues,
+                ...sportsSlugs.esports,
+                ...sportsSlugs.achievements,
+              ]
+            : category === "SOCIETY"
+              ? [...socialSlugs]
+              : [];
 
   const cards: EventCardData[] = events
     .map(toCard)
@@ -284,7 +295,56 @@ export default async function CategoryPage({
         </>
       )}
 
-      {category !== "POLITICS" && (
+      {category === "SOCIETY" && (
+        <>
+          {/* Главное окошко «Социальные тренды и общество» с окошками внутри:
+              Демография: тренды рождаемости, Демография: тренды миграции */}
+          <SocialTrendsMain
+            locale={locale}
+            dict={{
+              title: dict.society.title,
+              subtitle: dict.society.subtitle,
+            }}
+            cards={socialCards}
+            cardLabels={cardLabels}
+          />
+
+          {/* Своё окно прогноза — точная копия с главной страницы */}
+          <div id="custom-forecast" className="scroll-mt-24">
+            <CustomForecastWindow
+              locale={locale}
+              dict={{
+                title: dict.customForecast.title,
+                subtitle: dict.customForecast.subtitle,
+                subtitle2: dict.customForecast.subtitle2,
+                queryLabel: dict.customForecast.queryLabel,
+                queryPlaceholder: dict.customForecast.queryPlaceholder,
+                queryExample: dict.customForecast.queryExample,
+                chooseDate: dict.customForecast.chooseDate,
+                dateHint: dict.customForecast.dateHint,
+                currentPrice: dict.customForecast.currentPrice,
+                autoSource: dict.customForecast.autoSource,
+                analysis: dict.customForecast.analysis,
+                loading: dict.customForecast.loading,
+                noData: dict.customForecast.noData,
+                generate: dict.customForecast.generate,
+                generating: dict.customForecast.generating,
+                nameRequired: dict.customForecast.nameRequired,
+                dateRequired: dict.customForecast.dateRequired,
+                error: dict.customForecast.error,
+                priceLabel: dict.customForecast.priceLabel,
+                note: dict.customForecast.note,
+                support: dict.customForecast.support,
+                resistance: dict.customForecast.resistance,
+                change30d: dict.customForecast.change30d,
+                rsi: dict.customForecast.rsi,
+              }}
+            />
+          </div>
+        </>
+      )}
+
+      {category !== "POLITICS" && cards.length > 0 && (
         <section>
           <MarketsGrid
             locale={locale}
