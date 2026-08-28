@@ -33,6 +33,8 @@ const ru = {
     cta: "Выбрать событие",
     how: "Как это работает",
     newForecast: "Создать свой прогноз",
+    disclaimerExtra:
+      "Прогнозная оценка сформирована исследовательской группой на основе результатов комплексного анализа данных с применением логико-математических методов",
     disclaimer:
       "Прогнозы носят информационный характер и не являются инвестиционной рекомендацией.",
   },
@@ -125,6 +127,7 @@ const ru = {
     },
     dir: { UP: "Рост", DOWN: "Падение", SIDE: "Боковик" },
     confidence: "Уверенность",
+    accuracy: "Точность прогноза",
     support: "Поддержка",
     resistance: "Сопротивление",
     target: "Целевая дата",
@@ -253,6 +256,8 @@ const en: Dict = {
     cta: "Choose an event",
     how: "How it works",
     newForecast: "Create your own forecast",
+    disclaimerExtra:
+      "The forecast assessment was produced by the research team based on the results of comprehensive data analysis using logical and mathematical methods.",
     disclaimer: "Forecasts are informational only and are not investment advice.",
   },
   how: {
@@ -344,6 +349,7 @@ const en: Dict = {
     },
     dir: { UP: "Up", DOWN: "Down", SIDE: "Sideways" },
     confidence: "Confidence",
+    accuracy: "Forecast accuracy",
     support: "Support",
     resistance: "Resistance",
     target: "Target date",
@@ -470,6 +476,8 @@ const es: Dict = {
     cta: "Elegir evento",
     how: "Cómo funciona",
     newForecast: "Crear tu propia predicción",
+    disclaimerExtra:
+      "La evaluación del pronóstico fue elaborada por el grupo de investigación a partir de los resultados de un análisis integral de datos con la aplicación de métodos lógico-matemáticos.",
     disclaimer: "Las predicciones son informativas y no constituyen una recomendación de inversión.",
   },
   how: {
@@ -561,6 +569,7 @@ const es: Dict = {
     },
     dir: { UP: "Subida", DOWN: "Bajada", SIDE: "Lateral" },
     confidence: "Confianza",
+    accuracy: "Precisión del pronóstico",
     support: "Soporte",
     resistance: "Resistencia",
     target: "Fecha objetivo",
@@ -687,6 +696,8 @@ const it: Dict = {
     cta: "Scegli un evento",
     how: "Come funziona",
     newForecast: "Crea la tua previsione",
+    disclaimerExtra:
+      "La valutazione della previsione è stata elaborata dal gruppo di ricerca sulla base dei risultati di un'analisi completa dei dati con l'applicazione di metodi logico-matematici.",
     disclaimer: "Le previsioni hanno solo scopo informativo e non costituiscono una raccomandazione di investimento.",
   },
   how: {
@@ -778,6 +789,7 @@ const it: Dict = {
     },
     dir: { UP: "Rialzo", DOWN: "Ribasso", SIDE: "Laterale" },
     confidence: "Confidenza",
+    accuracy: "Precisione della previsione",
     support: "Supporto",
     resistance: "Resistenza",
     target: "Data obiettivo",
@@ -904,6 +916,8 @@ const fr: Dict = {
     cta: "Choisir un événement",
     how: "Comment ça marche",
     newForecast: "Créer votre propre prévision",
+    disclaimerExtra:
+      "L'évaluation de la prévision a été établie par le groupe de recherche sur la base des résultats d'une analyse complète des données avec l'application de méthodes logico-mathématiques.",
     disclaimer: "Les prévisions sont informatives et ne constituent pas une recommandation d'investissement.",
   },
   how: {
@@ -995,6 +1009,7 @@ const fr: Dict = {
     },
     dir: { UP: "Hausse", DOWN: "Baisse", SIDE: "Latéral" },
     confidence: "Confiance",
+    accuracy: "Précision de la prévision",
     support: "Support",
     resistance: "Résistance",
     target: "Date cible",
@@ -1121,6 +1136,8 @@ const de: Dict = {
     cta: "Ereignis wählen",
     how: "So funktioniert es",
     newForecast: "Eigene Prognose erstellen",
+    disclaimerExtra:
+      "Die Prognosebewertung wurde von der Forschungsgruppe auf der Grundlage der Ergebnisse einer umfassenden Datenanalyse unter Anwendung logisch-mathematischer Methoden erstellt.",
     disclaimer: "Prognosen dienen nur der Information und stellen keine Anlageempfehlung dar.",
   },
   how: {
@@ -1212,6 +1229,7 @@ const de: Dict = {
     },
     dir: { UP: "Anstieg", DOWN: "Rückgang", SIDE: "Seitwärts" },
     confidence: "Konfidenz",
+    accuracy: "Genauigkeit der Prognose",
     support: "Unterstützung",
     resistance: "Widerstand",
     target: "Zieldatum",

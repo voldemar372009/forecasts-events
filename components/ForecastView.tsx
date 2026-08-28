@@ -20,6 +20,7 @@ type FDict = {
   status: Record<string, string>;
   dir: Record<string, string>;
   confidence: string;
+  accuracy: string;
   support: string;
   resistance: string;
   target: string;
@@ -146,6 +147,10 @@ export default function ForecastView({
                 targetDate={data.chartData.targetDate}
                 targetValue={data.chartData.targetValue}
               />
+              <div className="mt-5 flex items-center justify-center gap-3 rounded-xl border border-accent/30 bg-accent/10 px-4 py-3">
+                <span className="text-sm font-medium text-white/70">{dict.accuracy}:</span>
+                <span className="text-3xl font-bold text-accent">{data.confidence ?? "—"}%</span>
+              </div>
             </div>
           )}
         </>

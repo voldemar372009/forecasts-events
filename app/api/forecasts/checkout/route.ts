@@ -9,8 +9,6 @@ import { getMarketQuote } from "@/lib/market";
 import { slugify } from "@/lib/slugify";
 import type { Event } from "@prisma/client";
 
-const DAY = 86400000;
-
 export async function POST(req: NextRequest) {
   const user = await getSessionUser();
   if (!user) return NextResponse.json({ error: "unauthorized" }, { status: 401 });

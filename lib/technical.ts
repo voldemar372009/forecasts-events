@@ -116,11 +116,11 @@ export function analyzeHistory(
     lastPrice: round(lastPrice),
     summaryRu:
       `Анализ по «${title}»: ${trendRu}, изменение за ~30 дней ${change30d >= 0 ? "+" : ""}${change30d}%. ` +
-      `${rsiRu}. Ожидаем вероятность ${dirRu} ~${confidence}% к целевой дате. ` +
+      `${rsiRu}. Ожидаем вероятность ${dirRu} ~${confidence}% к целевой дате. Точность прогноза: ${confidence}%. ` +
       `Ключевые уровни: поддержка ${support.join(", ")}, сопротивление ${resistance.join(", ")}.`,
     summaryEn:
       `Analysis for "${title}": ${trendEn}, ~30-day change ${change30d >= 0 ? "+" : ""}${change30d}%. ` +
-      `${rsiEn}. The model estimates ~${confidence}% probability of ${dirEn} by the target date. ` +
+      `${rsiEn}. The model estimates ~${confidence}% probability of ${dirEn} by the target date. Forecast accuracy: ${confidence}%. ` +
       `Key levels: support ${support.join(", ")}, resistance ${resistance.join(", ")}.`,
   };
 }

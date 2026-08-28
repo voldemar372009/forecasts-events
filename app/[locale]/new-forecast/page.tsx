@@ -37,7 +37,6 @@ export default async function NewForecastPage({ params }: { params: { locale: st
           autoSource: dict.newForecast.autoSource,
         }}
       />
-      <p className="pb-4 text-center text-xs text-white/40">{dict.hero.disclaimer}</p>
     </div>
   );
 }

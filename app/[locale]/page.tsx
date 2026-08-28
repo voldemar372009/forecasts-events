@@ -119,7 +119,6 @@ export default async function HomePage({ params }: { params: { locale: string } 
         />
       </section>
 
-      <p className="pb-4 text-center text-xs text-white/40">{dict.hero.disclaimer}</p>
     </div>
   );
 }

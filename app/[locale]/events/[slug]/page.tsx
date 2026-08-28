@@ -99,7 +99,6 @@ export default async function EventPage({
               closed: dict.eventPage.closed,
             }}
           />
-          <p className="mt-4 text-xs leading-relaxed text-white/40">{dict.hero.disclaimer}</p>
         </div>
       </div>
     </div>

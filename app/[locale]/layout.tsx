@@ -75,6 +75,9 @@ export default async function LocaleLayout({
         <main className="mx-auto w-full max-w-6xl px-4 py-8">{children}</main>
         <footer className="border-t border-night-line py-6">
           <p className="mx-auto max-w-3xl px-4 text-center text-xs leading-relaxed text-white/40">
+            {dict.hero.disclaimerExtra}
+          </p>
+          <p className="mx-auto max-w-3xl px-4 text-center text-xs leading-relaxed text-white/40">
             © {new Date().getFullYear()} {dict.nav.brand} · {dict.hero.disclaimer}
           </p>
         </footer>

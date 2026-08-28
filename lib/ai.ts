@@ -85,11 +85,11 @@ function mockPayload(event: { title: string; category: string }, price: number, 
     direction,
     confidence,
     summaryRu: isEvent
-      ? `Анализ события «${event.title}»: на основе доступных сигналов и контекста модель оценивает вероятность ${dirRu} в ${confidence}% к дате ${dateStr}. Рекомендуется следить за новостями и обновлениями по теме.`
-      : `ДЕМО-прогноз по «${event.title}»: модель оценивает вероятность ${dirRu} в ${confidence}% к дате ${dateStr}. Текущий уровень — ${price}. Рекомендуем подключить ключ OpenAI для полноценной аналитики.`,
+      ? `Анализ события «${event.title}»: на основе доступных сигналов и контекста модель оценивает вероятность ${dirRu} в ${confidence}% к дате ${dateStr}. Точность прогноза: ${confidence}%. Рекомендуется следить за новостями и обновлениями по теме.`
+      : `ДЕМО-прогноз по «${event.title}»: модель оценивает вероятность ${dirRu} в ${confidence}% к дате ${dateStr}. Текущий уровень — ${price}. Точность прогноза: ${confidence}%. Рекомендуем подключить ключ OpenAI для полноценной аналитики.`,
     summaryEn: isEvent
-      ? `Event analysis for "${event.title}": based on available signals and context, the model estimates a ${confidence}% probability of ${dirEn} by ${dateStr}. Follow news and updates on the topic.`
-      : `DEMO forecast for "${event.title}": the model estimates the probability of ${dirEn} at ${confidence}% by ${dateStr}. Current level is ${price}. Connect an OpenAI key for full analytics.`,
+      ? `Event analysis for "${event.title}": based on available signals and context, the model estimates a ${confidence}% probability of ${dirEn} by ${dateStr}. Forecast accuracy: ${confidence}%. Follow news and updates on the topic.`
+      : `DEMO forecast for "${event.title}": the model estimates the probability of ${dirEn} at ${confidence}% by ${dateStr}. Current level is ${price}. Forecast accuracy: ${confidence}%. Connect an OpenAI key for full analytics.`,
     support: [Math.round(price * (1 - spread / 100) * 100) / 100, Math.round(price * (1 - (spread * 1.8) / 100) * 100) / 100],
     resistance: [Math.round(price * (1 + spread / 100) * 100) / 100, Math.round(price * (1 + (spread * 1.8) / 100) * 100) / 100],
     drift,
@@ -112,7 +112,8 @@ async function callOpenAI(args: {
     "direction (\"UP\"|\"DOWN\"|\"SIDE\"), confidence (integer 0-100), summaryRu (120-300 chars, Russian), " +
     "summaryEn (120-300 chars, English), support (array of 2 numbers), resistance (array of 2 numbers), " +
     "drift (daily expected change as decimal, e.g. 0.0015), volatility (daily volatility as decimal, e.g. 0.02). " +
-    "Values must be consistent with the direction and confidence.";
+    "Values must be consistent with the direction and confidence. " +
+    "In both summaries explicitly state the forecast accuracy as a percentage (\"Точность прогноза: N%\" / \"Forecast accuracy: N%\") matching the confidence value.";
   const user = `Event: ${event.title} (category: ${event.category}). ` +
     `Current price: ${price}. ` +
     (args.history && args.history.length

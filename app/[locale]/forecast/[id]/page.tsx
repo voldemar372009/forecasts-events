@@ -66,6 +66,7 @@ export default async function ForecastPage({
           status: dict.forecast.status,
           dir: dict.forecast.dir,
           confidence: dict.forecast.confidence,
+          accuracy: dict.forecast.accuracy,
           support: dict.forecast.support,
           resistance: dict.forecast.resistance,
           target: dict.forecast.target,
