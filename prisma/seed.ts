@@ -573,6 +573,74 @@ async function main() {
     });
   }
 
+  // ---- Политика и геополитика (окно «Политика и геополитика» на странице Политика) ----
+  // Главное окошко с тремя окошками внутри: президентские выборы, парламентские выборы, праймериз.
+  const politicsEvents = [
+    {
+      slug: "presidential-elections",
+      title: "Выборы президентские",
+      titleEn: "Presidential Elections",
+      currentPrice: 50,
+      vol: 0.02,
+      seed: 401,
+      photoKw: "election,voting,president",
+      description:
+        "Прогноз по президентским выборам: шансы кандидатов, явка избирателей, сценарии второго тура и влияние исхода на геополитику и рынки. ИИ-прогноз на выбранную дату с графиком траектории и вероятностью направления.",
+      descriptionEn:
+        "Presidential elections forecast: candidates' chances, voter turnout, runoff scenarios and the impact of the outcome on geopolitics and markets. AI forecast for the chosen date with a trajectory chart and direction probability.",
+    },
+    {
+      slug: "parliamentary-elections",
+      title: "Выборы парламентские",
+      titleEn: "Parliamentary Elections",
+      currentPrice: 48.5,
+      vol: 0.018,
+      seed: 402,
+      photoKw: "parliament,election,government",
+      description:
+        "Прогноз по парламентским выборам: распределение мест, возможные коалиции, явка и влияние на законодательную повестку. ИИ-прогноз на выбранную дату с вероятностью направления и ключевыми сценариями.",
+      descriptionEn:
+        "Parliamentary elections forecast: seat distribution, possible coalitions, turnout and the impact on the legislative agenda. AI forecast for the chosen date with direction probability and key scenarios.",
+    },
+    {
+      slug: "primaries",
+      title: "Праймериз",
+      titleEn: "Primaries",
+      currentPrice: 52.3,
+      vol: 0.025,
+      seed: 403,
+      photoKw: "primaries,voting,campaign",
+      description:
+        "Прогноз по праймериз: лидеры внутрипартийной гонки, рейтинги кандидатов, ключевые штаты и регионы, сценарии выдвижения. ИИ-прогноз на выбранную дату с графиком траектории.",
+      descriptionEn:
+        "Primaries forecast: leaders of the internal party race, candidate ratings, key states and regions, nomination scenarios. AI forecast for the chosen date with a trajectory chart.",
+    },
+  ];
+
+  for (const p of politicsEvents) {
+    const chartData = historyWalk(p.currentPrice, 40, p.vol, p.seed);
+    await prisma.event.upsert({
+      where: { slug: p.slug },
+      update: {
+        currentPrice: p.currentPrice,
+        chartData,
+      },
+      create: {
+        slug: p.slug,
+        title: p.title,
+        titleEn: p.titleEn,
+        description: p.description,
+        descriptionEn: p.descriptionEn,
+        category: EventCategory.POLITICS,
+        price: 10,
+        currency: "EUR",
+        currentPrice: p.currentPrice,
+        chartData,
+        imageUrl: `https://loremflickr.com/640/360/${encodeURIComponent(p.photoKw)}`,
+      },
+    });
+  }
+
   // ---- Demo forecasts for the demo user (leaderboard / dashboard demo) ----
   const gold = await prisma.event.findUniqueOrThrow({ where: { slug: "gold" } });
   const btc = await prisma.event.findUniqueOrThrow({ where: { slug: "bitcoin" } });

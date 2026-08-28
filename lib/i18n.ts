@@ -94,6 +94,10 @@ const ru = {
     world: "Динамика основных показателей мировых бирж",
     russian: "Динамика основных показателей российских бирж",
   },
+  politics: {
+    title: "Политика и геополитика",
+    subtitle: "Прогнозы по президентским и парламентским выборам, праймериз и ключевым геополитическим событиям",
+  },
   eventPage: {
     back: "← Все события",
     description: "Описание",
@@ -343,6 +347,10 @@ const en: Dict = {
     world: "Key Indicators of World Exchanges",
     russian: "Key Indicators of Russian Exchanges",
   },
+  politics: {
+    title: "Politics & Geopolitics",
+    subtitle: "Forecasts for presidential and parliamentary elections, primaries and key geopolitical events",
+  },
   eventPage: {
     back: "← All events",
     description: "Description",
@@ -589,6 +597,10 @@ const es: Dict = {
     stocks: "Dinámica de las acciones",
     world: "Principales indicadores de las bolsas mundiales",
     russian: "Principales indicadores de las bolsas rusas",
+  },
+  politics: {
+    title: "Política y geopolítica",
+    subtitle: "Predicciones sobre elecciones presidenciales y parlamentarias, primarias y eventos geopolíticos clave",
   },
   eventPage: {
     back: "← Todos los eventos",
@@ -837,6 +849,10 @@ const it: Dict = {
     world: "Principali indicatori delle borse mondiali",
     russian: "Principali indicatori delle borse russe",
   },
+  politics: {
+    title: "Politica e geopolitica",
+    subtitle: "Previsioni su elezioni presidenziali e parlamentari, primarie ed eventi geopolitici chiave",
+  },
   eventPage: {
     back: "← Tutti gli eventi",
     description: "Descrizione",
@@ -1084,6 +1100,10 @@ const fr: Dict = {
     world: "Principaux indicateurs des bourses mondiales",
     russian: "Principaux indicateurs des bourses russes",
   },
+  politics: {
+    title: "Politique et géopolitique",
+    subtitle: "Prévisions sur les élections présidentielles et parlementaires, les primaires et les événements géopolitiques clés",
+  },
   eventPage: {
     back: "← Tous les événements",
     description: "Description",
@@ -1330,6 +1350,10 @@ const de: Dict = {
     stocks: "Aktiendynamik",
     world: "Wichtigste Kennzahlen der Weltbörsen",
     russian: "Wichtigste Kennzahlen der russischen Börsen",
+  },
+  politics: {
+    title: "Politik und Geopolitik",
+    subtitle: "Prognosen zu Präsidentschafts- und Parlamentswahlen, Vorwahlen und wichtigen geopolitischen Ereignissen",
   },
   eventPage: {
     back: "← Alle Ereignisse",
